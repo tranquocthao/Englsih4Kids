@@ -1,6 +1,6 @@
 ### INTRODUCTION
   * Full name: ***Tran Quoc Thao*** <br/>
-  * Project name: ***English4Kid*** <br/>
+  * Project name: ***English4Kids*** <br/>
   ![alt](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcT3Kn0OyazYiGOfCHuBP8mhX-_U0F74ygZnLc4jeWHAzOPSnIKNUQ) <br/>
 ### DECRIPTION
   * This app will help the kids improve English skills about listening, reading, writing, speaking. <br/>
