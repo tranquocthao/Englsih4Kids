@@ -8,4 +8,4 @@
   * The kids can play some games to memorize. <br/>
   * The kids can read bilingual jokes to relax. <br/>
   * The kids can mark their favorite words. <br/>
-  * Technology: Firebase <br/>
+  * Technology: Firebase. <br/>
