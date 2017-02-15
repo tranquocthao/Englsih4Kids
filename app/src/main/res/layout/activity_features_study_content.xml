@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_features_study_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="edu.uit.quocthao.english4kids.features.study.ContentStudy">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#0ff043"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="#713d0d"
+            android:layout_weight="1" />
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/activity_features_study_content_tv_word"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#5eff0022"
+            android:textColor="#bf6d2e"
+            android:textSize="25sp"
+            android:layout_weight="2"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:background="#ffee00"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#ff007b"
+        android:gravity="center"
+        android:layout_weight="3">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/activity_features_study_content_vp_picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0f0"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="#0ff043"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#713d0d"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#080c7b"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:id="@+id/activity_features_study_content_ib_next"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="#ffee00"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</LinearLayout>

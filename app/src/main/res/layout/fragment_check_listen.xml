@@ -1,0 +1,17 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00f"
+    tools:context="edu.uit.quocthao.english4kids.features.check.ListenFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ImageButton
+        android:scaleType="fitXY"
+        android:id="@+id/fragment_check_ib_listen"
+        android:layout_gravity="center"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:src="@drawable/ic_check_listen"/>
+
+</FrameLayout>

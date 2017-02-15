@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="features">
+        <item >Học từ mới</item>
+        <item >Từ ghi nhớ</item>
+        <item >Truyện vui</item>
+        <item >Kiểm tra trí nhớ</item>
+        <item >Cài đặt</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "373619075147",
+    "firebase_url": "https://fir-english4kids.firebaseio.com",
+    "project_id": "firebase-english4kids",
+    "storage_bucket": "firebase-english4kids.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:373619075147:android:0d319f5ea64f7820",
+        "android_client_info": {
+          "package_name": "edu.uit.quocthao.english4kids"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "373619075147-1u6rbmnrtmqio415eaiuc257grhk8q1f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.uit.quocthao.english4kids",
+            "certificate_hash": "9A64039423C90C38294A4FCE0356EFE099032EA6"
+          }
+        },
+        {
+          "client_id": "373619075147-bt2m4714tub0vask4hebe6frljjk77q2.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "373619075147-t8rbqu68vb1vnvnbanera32uq5p1jfmt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJy3t9mtFTiclS8J_klOU-lIDvpDqTdlY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373619075147-bt2m4714tub0vask4hebe6frljjk77q2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
