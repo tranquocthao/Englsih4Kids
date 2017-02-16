@@ -15,8 +15,9 @@ import edu.uit.quocthao.english4kids.R;
 
 public class FeaturesStudy extends AppCompatActivity {
 
-    ViewPager vpTopic;
-    TabLayout tlTopic;
+    private ViewPager vpTopic;
+
+    private TabLayout tlTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

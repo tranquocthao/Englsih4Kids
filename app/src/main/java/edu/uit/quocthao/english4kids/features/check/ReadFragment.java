@@ -1,6 +1,5 @@
 package edu.uit.quocthao.english4kids.features.check;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,8 +16,9 @@ import edu.uit.quocthao.english4kids.R;
  */
 public class ReadFragment extends Fragment {
 
-    ImageButton ibRead;
-    Intent intent;
+    private ImageButton ibRead;
+
+    private Intent intentRead;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,12 +34,12 @@ public class ReadFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibRead = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_read);
-        intent = new Intent(getActivity(), ContentRead.class);
+        intentRead = new Intent(getActivity(), ContentRead.class);
 
         ibRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                startActivity(intentRead);
             }
         });
     }

@@ -7,7 +7,13 @@ import android.app.Activity;
  */
 
 public class ObjectStory extends Activity {
-    private String titleVi, titleEn, bodyVi, bodyEn;
+    private String titleVi;
+
+    private String titleEn;
+
+    private String bodyVi;
+
+    private String bodyEn;
 
     public ObjectStory() {
         this.titleVi = null;
@@ -22,7 +28,6 @@ public class ObjectStory extends Activity {
         this.bodyVi = bodyVi;
         this.bodyEn = bodyEn;
     }
-
 
     public String getTitleVi() {
         return this.titleVi;

@@ -11,22 +11,29 @@ import edu.uit.quocthao.english4kids.R;
 
 public class ContentStory extends AppCompatActivity {
 
-    TextView tvTitle, tvBody;
-    ObjectStory[] scBody = new ObjectStory[30];
-    ImageButton ibNext, ibBack, ibLanguage;
-    int k, t = 0;
+    private TextView tvTitle;
+
+    private TextView tvBody;
+
+    private ObjectStory[] scBody;
+
+    private ImageButton ibNext;
+
+    private ImageButton ibBack;
+
+    private ImageButton ibLanguage;
+
+    private int kKk;
+
+    private int tTt = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_features_story_content);
 
-        tvTitle = (TextView)findViewById(R.id.activity_feature_story_content_tv_title);
-        tvBody = (TextView)findViewById(R.id.activity_feature_story_content_tv_body);
-        ibNext = (ImageButton)findViewById(R.id.activity_feature_story_content_ib_next);
-        ibBack = (ImageButton)findViewById(R.id.activity_feature_story_content_ib_back);
-        ibLanguage = (ImageButton)findViewById(R.id.activity_feature_story_content_ib_language);
-
+        scBody = new ObjectStory[30];
+        initStory();
         addStories();
 
         //lấy intent gọi Activity này
@@ -34,31 +41,32 @@ public class ContentStory extends AppCompatActivity {
         //có intent rồi thì lấy Bundle dựa vào story
         Bundle bundle = intentCaller.getBundleExtra("story");
         //có Bundle rồi lấy thông số dựa vào position
-        k = bundle.getInt("position");
+        kKk = bundle.getInt("position");
 
         //tiến hành tìm tựa đề truyện thích hợp
-        tvTitle.setText(scBody[k].getTitleVi());
+        tvTitle.setText(scBody[kKk].getTitleVi());
         //tiến hành tìm đoạn truyện tương thích
-        tvBody.setText(scBody[k].getBodyVi());
+        tvBody.setText(scBody[kKk].getBodyVi());
 
 
         //nút Back
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                t = 0;
+                tTt = 0;
                 //hình Logo
                 ibLanguage.setImageResource(R.drawable.ic_language_american);
 
-                k --;
+                kKk--;
                 // có 10 truyện
-                if(k < 0)
-                    k = 29;
+                if (kKk < 0) {
+                    kKk = 29;
+                }
 
                 //tiến hành tìm tựa đề truyện thích hợp
-                tvTitle.setText(scBody[k % 30].getTitleVi());
+                tvTitle.setText(scBody[kKk % 30].getTitleVi());
                 //tiến hành tìm đoạn truyện tương thích
-                tvBody.setText(scBody[k % 30].getBodyVi());
+                tvBody.setText(scBody[kKk % 30].getBodyVi());
 
             }
         });
@@ -67,15 +75,15 @@ public class ContentStory extends AppCompatActivity {
         ibNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                t = 0;
+                tTt = 0;
                 //hình Logo
                 ibLanguage.setImageResource(R.drawable.ic_language_american);
 
-                k ++;
+                kKk++;
                 //tiến hành tìm tựa đề truyện thích hợp
-                tvTitle.setText(scBody[k % 30].getTitleVi());
+                tvTitle.setText(scBody[kKk % 30].getTitleVi());
                 //tiến hành tìm đoạn truyện tương thích
-                tvBody.setText(scBody[k % 30].getBodyVi());
+                tvBody.setText(scBody[kKk % 30].getBodyVi());
 
             }
         });
@@ -85,32 +93,40 @@ public class ContentStory extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //thay đổi icon và nội dung Việt và Anh
-                if((t % 2) == 0){
+                if ((tTt % 2) == 0) {
                     //tiến hành tìm tựa đề truyện thích hợp
-                    tvTitle.setText(scBody[k % 30].getTitleEn());
+                    tvTitle.setText(scBody[kKk % 30].getTitleEn());
                     //tiến hành tìm đoạn truyện tương thích
-                    tvBody.setText(scBody[k % 30].getBodyEn());
+                    tvBody.setText(scBody[kKk % 30].getBodyEn());
                     //hình Logo
                     ibLanguage.setImageResource(R.drawable.ic_language_vietnam);
-                }
-                else {
+                } else {
                     //tiến hành tìm tựa đề truyện thích hợp
-                    tvTitle.setText(scBody[k % 30].getTitleVi());
+                    tvTitle.setText(scBody[kKk % 30].getTitleVi());
                     //tiến hành tìm đoạn truyện tương thích
-                    tvBody.setText(scBody[k % 30].getBodyVi());
+                    tvBody.setText(scBody[kKk % 30].getBodyVi());
                     //hình Logo
                     ibLanguage.setImageResource(R.drawable.ic_language_american);
                 }
 
-                t ++;
+                tTt++;
             }
         });
     }
 
-    public void addStories(){
+    private void initStory() {
+        tvTitle = (TextView) findViewById(R.id.activity_feature_story_content_tv_title);
+        tvBody = (TextView) findViewById(R.id.activity_feature_story_content_tv_body);
+        ibNext = (ImageButton) findViewById(R.id.activity_feature_story_content_ib_next);
+        ibBack = (ImageButton) findViewById(R.id.activity_feature_story_content_ib_back);
+        ibLanguage = (ImageButton) findViewById(R.id.activity_feature_story_content_ib_language);
+    }
 
-        for(int i = 0; i < 30; i ++)
+    public void addStories() {
+
+        for (int i = 0; i < 30; i++) {
             scBody[i] = new ObjectStory();
+        }
 
         scBody[0].setTitleVi("Đến giờ ăn rồi sao ?");
         scBody[0].setTitleEn("Has The Dinner-Bell Rung ?");
@@ -130,7 +146,7 @@ public class ContentStory extends AppCompatActivity {
         scBody[1].setTitleEn("A Popular Song");
         scBody[1].setBodyVi(
                 " - Vậy cái bài hắn đang hát là một ca khúc nổi tiếng ?\n" +
-                        " - Nó từng nổi tiếng trước khi hắn bắt đầu hát bài ấy."
+                        " - Nó từng nổi tiến  g trước khi hắn bắt đầu hát bài ấy."
         );
         scBody[1].setBodyEn(
                 " - So that is a popular song he is singing ?\n" +

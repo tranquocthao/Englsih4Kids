@@ -13,9 +13,11 @@ import edu.uit.quocthao.english4kids.features.study.FeaturesStudy;
 
 public class MainActivity extends AppCompatActivity {
 
-    String arrFeatures[] = null;
-    ListView lvFeatures = null;
-    FeaturesAdapter featuresAdapter = null;
+    private String arrFeatures[] = null;
+
+    private ListView lvFeatures = null;
+
+    private FeaturesAdapter featuresAdapter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent;
 
-                switch (position){
+                switch (position) {
                     case 0:
-                         intent = new Intent(MainActivity.this, FeaturesStudy.class);
+                        intent = new Intent(MainActivity.this, FeaturesStudy.class);
                         startActivity(intent);
                         break;
                     case 2:

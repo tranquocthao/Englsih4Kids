@@ -8,15 +8,10 @@ import edu.uit.quocthao.english4kids.R;
 
 public class ContentRead extends AppCompatActivity {
 
-    ViewPager vpRead;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_features_check_content_read);
 
-        vpRead = (ViewPager) findViewById(R.id.activity_features_check_content_read_vp_picture);
-        final ContentGameAdapter adapter = new ContentGameAdapter(this);
-        vpRead.setAdapter(adapter);
     }
 }

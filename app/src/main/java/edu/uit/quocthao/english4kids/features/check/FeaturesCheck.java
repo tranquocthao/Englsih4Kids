@@ -10,19 +10,22 @@ import edu.uit.quocthao.english4kids.features.study.TopicAdapter;
 
 public class FeaturesCheck extends AppCompatActivity {
 
-    ViewPager vpGame;
-    TabLayout tlGame;
+    private ViewPager vpGame;
+
+    private TabLayout tlGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_features_check);
 
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         vpGame = (ViewPager) findViewById(R.id.activity_features_check_vp_game);
         tlGame = (TabLayout) findViewById(R.id.activity_features_check_tl_game);
         GameAdapter adapter = new GameAdapter(getSupportFragmentManager());
         vpGame.setAdapter(adapter);
+
+        //Hiện TabLayout
         tlGame.setupWithViewPager(vpGame);
         vpGame.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlGame));
         tlGame.setTabsFromPagerAdapter(adapter);

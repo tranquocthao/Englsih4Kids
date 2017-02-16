@@ -13,11 +13,13 @@ import android.widget.ImageButton;
 
 import edu.uit.quocthao.english4kids.R;
 
-public class AnimalFragment extends Fragment{
+public class AnimalFragment extends Fragment {
 
-    ImageButton ibAnimal;
-    Bundle bundle;
-    Intent intent;
+    private ImageButton ibAnimal;
+
+    private Bundle bundleAnimal;
+
+    private Intent intentAnimal;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,15 +34,15 @@ public class AnimalFragment extends Fragment{
         // Inflate the layout for this fragment
 
         ibAnimal = (ImageButton) getActivity().findViewById(R.id.fragment_animal_ib_topic);
-        intent = new Intent(getActivity(), ContentStudy.class);
-        bundle = new Bundle();
-        bundle.putInt("topic", 0);
-        intent.putExtra("topics", bundle);
+        intentAnimal = new Intent(getActivity(), ContentStudy.class);
+        bundleAnimal = new Bundle();
+        bundleAnimal.putInt("topic", 0);
+        intentAnimal.putExtra("topics", bundleAnimal);
 
         ibAnimal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                startActivity(intentAnimal);
             }
         });
     }

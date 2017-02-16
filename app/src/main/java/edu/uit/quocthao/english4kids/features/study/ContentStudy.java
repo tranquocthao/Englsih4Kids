@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 
 import edu.uit.quocthao.english4kids.MainActivity;
@@ -27,9 +28,13 @@ import edu.uit.quocthao.english4kids.R;
 
 public class ContentStudy extends AppCompatActivity {
 
-    TextView tvWord;
-    ViewPager vpPicture;
-    int topic = 0;
+    private TextView tvWord;
+
+    private ViewPager vpPicture;
+
+    private int topicStudy = 0;
+
+    private ContentAdapter adapterContent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +46,21 @@ public class ContentStudy extends AppCompatActivity {
 
         selectTopic();
 
-        final ContentAdapter adapter = new ContentAdapter(this, topic);
-        vpPicture.setAdapter(adapter);
+        adapterContent = new ContentAdapter(this, topicStudy);
+        vpPicture.setAdapter(adapterContent);
 
         selectTopic();
 
         vpPicture.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+            public void onPageScrolled(int position,
+                                       float positionOffset,
+                                       int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-                tvWord.setText(adapter.getPageTitle(position) + "");
+                tvWord.setText(adapterContent.getPageTitle(position) + "");
 
             }
 
@@ -66,14 +72,14 @@ public class ContentStudy extends AppCompatActivity {
 
     }
 
-    public void selectTopic(){
+    public void selectTopic() {
         Intent intentCaller = getIntent();
         //có intent rồi thì lấy topics trong Bundle.
         Bundle topics = intentCaller.getBundleExtra("topics");
         //lấy giá trị topic trong topics.
-        topic = topics.getInt("topic");
+        topicStudy = topics.getInt("topic");
 
-        switch (topic) {
+        switch (topicStudy) {
             case 0:
                 tvWord.setText("Dog\n(Con chó)");
                 break;

@@ -1,6 +1,5 @@
 package edu.uit.quocthao.english4kids.features.study;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,10 +13,11 @@ import edu.uit.quocthao.english4kids.R;
 
 public class SportFragment extends Fragment {
 
-    ImageButton ibSport;
-    Bundle bundle;
-    Intent intent;
+    private ImageButton ibSport;
 
+    private Bundle bundleSport;
+
+    private Intent intentSport;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,15 +33,15 @@ public class SportFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibSport = (ImageButton) getActivity().findViewById(R.id.fragment_sport_ib_topic);
-        intent = new Intent(getActivity(), ContentStudy.class);
-        bundle = new Bundle();
-        bundle.putInt("topic", 1);
-        intent.putExtra("topics", bundle);
+        intentSport = new Intent(getActivity(), ContentStudy.class);
+        bundleSport = new Bundle();
+        bundleSport.putInt("topic", 1);
+        intentSport.putExtra("topics", bundleSport);
 
         ibSport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                startActivity(intentSport);
             }
         });
     }

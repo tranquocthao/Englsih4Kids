@@ -12,27 +12,31 @@ import java.util.ArrayList;
 
 public class FeaturesAdapter extends ArrayAdapter<String> {
 
-    Activity context=null;
-    int layoutId;
-    String[] arrFeatures;
+    private Activity contextFeatures = null;
+
+    private int layoutId;
+
+    private String[] arrFeatures;
 
     public FeaturesAdapter(Activity context, int layoutId, String[] arrFeatures) {
         super(context, layoutId, arrFeatures);
 
-        this.context = context;
+        this.contextFeatures = context;
         this.layoutId = layoutId;
         this.arrFeatures = arrFeatures;
 
     }
 
-    public View getView(int position, View convertView, ViewGroup parent){
-        LayoutInflater inflater = context.getLayoutInflater();
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = contextFeatures.getLayoutInflater();
         convertView = inflater.inflate(R.layout.adapter_features, null);
 
-        ImageView ivFeature = (ImageView) convertView.findViewById(R.id.adapter_features_iv_feature);
-        TextView tvFeature = (TextView) convertView.findViewById(R.id.adapter_features_tv_feature);
+        ImageView ivFeature = (ImageView) convertView
+                .findViewById(R.id.adapter_features_iv_feature);
+        TextView tvFeature = (TextView) convertView
+                .findViewById(R.id.adapter_features_tv_feature);
 
-        switch (position){
+        switch (position) {
             case 0:
                 ivFeature.setImageResource(R.drawable.ic_features_study);
                 tvFeature.setText(arrFeatures[0]);

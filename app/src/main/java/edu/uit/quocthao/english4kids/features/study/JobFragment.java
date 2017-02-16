@@ -1,6 +1,5 @@
 package edu.uit.quocthao.english4kids.features.study;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,10 +13,11 @@ import edu.uit.quocthao.english4kids.R;
 
 public class JobFragment extends Fragment {
 
-    ImageButton ibJob;
-    Bundle bundle;
-    Intent intent;
+    private  ImageButton ibJob;
 
+    private Bundle bundleJob;
+
+    private Intent intentJob;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,15 +33,15 @@ public class JobFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibJob = (ImageButton) getActivity().findViewById(R.id.fragment_job_ib_topic);
-        intent = new Intent(getActivity(), ContentStudy.class);
-        bundle = new Bundle();
-        bundle.putInt("topic", 2);
-        intent.putExtra("topics", bundle);
+        intentJob = new Intent(getActivity(), ContentStudy.class);
+        bundleJob = new Bundle();
+        bundleJob.putInt("topic", 2);
+        intentJob.putExtra("topics", bundleJob);
 
         ibJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                startActivity(intentJob);
             }
         });
     }

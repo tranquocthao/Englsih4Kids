@@ -1,6 +1,5 @@
 package edu.uit.quocthao.english4kids.features.check;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,8 +17,9 @@ import edu.uit.quocthao.english4kids.features.study.ContentStudy;
  */
 public class ListenFragment extends Fragment {
 
-    ImageButton ibListen;
-    Intent intent;
+    private ImageButton ibListen;
+
+    private Intent intentListen;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,12 +35,12 @@ public class ListenFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibListen = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_listen);
-        intent = new Intent(getActivity(), ContentListen.class);
+        intentListen = new Intent(getActivity(), ContentListen.class);
 
         ibListen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(intent);
+                startActivity(intentListen);
             }
         });
     }
