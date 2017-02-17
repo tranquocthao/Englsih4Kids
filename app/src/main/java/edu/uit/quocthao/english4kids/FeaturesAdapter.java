@@ -56,11 +56,6 @@ public class FeaturesAdapter extends ArrayAdapter<String> {
                 ivFeature.setImageResource(R.drawable.ic_features_check);
                 tvFeature.setText(arrFeatures[3]);
                 break;
-
-            case 4:
-                ivFeature.setImageResource(R.drawable.ic_features_setting);
-                tvFeature.setText(arrFeatures[4]);
-                break;
         }
 
         return convertView;

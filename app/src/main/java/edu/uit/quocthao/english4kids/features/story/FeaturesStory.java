@@ -8,6 +8,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
@@ -24,18 +31,15 @@ public class FeaturesStory extends AppCompatActivity {
 
     private Intent intentStory;
 
-    private String arrVi[] = {
-            "Đến giờ ăn rồi sao ?", "Ca khúc nổi tiếng",
-            "Bức chân dung", "Món quà của người con gái",
-            "Kẻ ăn xin", "Áo cưới màu trắng", "Thành công một nửa",
-            "Sách viễn tưởng", "Anh chỉ có mình em", "Đừng nói nữa",
-            "Tham vọng thời trai trẻ", "Tiền và bạn", "Dòng sông không sâu",
-            "Bò ăn cỏ", "Bí mật khủng khiếp", "Ruồi", "Làm sao để sống?",
-            "Biết làm sao bây giờ?", "Gà và Chó", "Vợ tôi đó",
-            "Can trường và tế nhị", "Nịnh bợ", "Thời gian", "Vay tiền",
-            "Bao nhiêu kẻ bất lương?", "Ảnh phóng lớn", "Kinh nghiệm khủng khiếp",
-            "Sư tử ăn thịt người", "Con xuống bơi được không?", "Xin chúc mừng!"
-    };
+    private FirebaseDatabase fdStory = FirebaseDatabase.getInstance();
+
+    private DatabaseReference drStory = fdStory.getReference();
+
+    private ObjectStory objStory;
+
+    private ArrayList<ObjectStory> listStories = new ArrayList<>();
+
+    private int lengthStory = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +48,56 @@ public class FeaturesStory extends AppCompatActivity {
 
         lvNames = (ListView) findViewById(R.id.activity_features_story_lv_names);
 
-        bundleStory = new Bundle();
+        loadStory();
+
         intentStory = new Intent(FeaturesStory.this, ContentStory.class);
         arrNames = new ArrayList<String>();
-
-        for (int i = 0; i < 30; i++) {
-            arrNames.add(arrVi[i]);
-        }
-
-        adapterNames = new ArrayAdapter<String>(
-                FeaturesStory.this, android.R.layout.simple_list_item_1, arrNames);
-        lvNames.setAdapter(adapterNames);
 
         lvNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                bundleStory.putInt("position", position);
-                intentStory.putExtra("story", bundleStory);
+                bundleStory = new Bundle();
+                bundleStory.putSerializable("story", listStories.get(position));
+                intentStory.putExtra("stories", bundleStory);
                 startActivity(intentStory);
+            }
+        });
+    }
+
+    private void loadStory() {
+        drStory.child("story").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lengthStory = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
+
+                for (int i = 0; i < lengthStory; i++) {
+                    objStory = new ObjectStory();
+
+                    objStory.setTitleVi(dataSnapshot.child("story" + i)
+                            .child("vietnam").child("title").getValue().toString());
+                    objStory.setTitleEn(dataSnapshot.child("story" + i)
+                            .child("english").child("title").getValue().toString());
+                    objStory.setBodyVi(dataSnapshot.child("story" + i)
+                            .child("vietnam").child("body").getValue().toString());
+                    objStory.setBodyEn(dataSnapshot.child("story" + i)
+                            .child("english").child("body").getValue().toString());
+
+                    listStories.add(objStory);
+                }
+
+                for (int i = 0; i < lengthStory; i++) {
+                    arrNames.add(listStories.get(i).getTitleVi());
+                }
+                adapterNames = new ArrayAdapter<String>(
+                        FeaturesStory.this, android.R.layout.simple_list_item_1, arrNames);
+
+                lvNames.setAdapter(adapterNames);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

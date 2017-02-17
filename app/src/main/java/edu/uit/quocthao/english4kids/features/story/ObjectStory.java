@@ -2,11 +2,13 @@ package edu.uit.quocthao.english4kids.features.story;
 
 import android.app.Activity;
 
+import java.io.Serializable;
+
 /**
  * Created by Quoc Thao on 2/10/2017.
  */
 
-public class ObjectStory extends Activity {
+public class ObjectStory implements Serializable {
     private String titleVi;
 
     private String titleEn;

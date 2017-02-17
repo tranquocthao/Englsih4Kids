@@ -15,11 +15,21 @@
         android:background="#0ff043"
         android:layout_weight="1">
 
-        <TextView
+        <LinearLayout
+            android:gravity="center"
+            android:layout_gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#713d0d"
-            android:layout_weight="1" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/activity_features_study_content_iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_home"/>
+
+        </LinearLayout>
 
         <TextView
             android:gravity="center"
@@ -31,11 +41,20 @@
             android:textSize="25sp"
             android:layout_weight="2"/>
 
-        <TextView
+        <LinearLayout
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/activity_features_study_content_iv_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_like"/>
+        </LinearLayout>
 
     </LinearLayout>
 
