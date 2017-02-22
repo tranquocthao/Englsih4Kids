@@ -4,7 +4,8 @@
     android:id="@+id/activity_features_check_content_write"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fcf7d0"
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.features.check.ContentListen">
 
@@ -16,9 +17,13 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_time"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#713d0d"
+            android:text="50(s)"
             android:layout_weight="1" />
 
         <LinearLayout
@@ -35,9 +40,13 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_answer"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
+            android:text="0/10"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -50,10 +59,11 @@
         android:layout_weight="3">
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/activity_features_check_content_write_iv_picture"
             android:layout_width="256dp"
             android:layout_height="256dp"
-            android:background="#0f0"
+            android:background="#fcb0b0"
             android:padding="10dp"/>
 
     </LinearLayout>
@@ -65,12 +75,13 @@
         android:background="#0ff043"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_write_btn_reset"
-            android:text="Reset"
+        <ImageButton
+            android:id="@+id/activity_features_check_content_write_ib_reset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#e27006"
+            android:src="@drawable/btn_reset"
+            android:scaleType="fitCenter"
             android:layout_weight="1"/>
 
         <EditText
@@ -79,17 +90,18 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#0d714c"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:textColor="#d4cd0c"
             android:textSize="30sp"
-            android:ems="10"/>
+            android:ems="15"/>
 
-        <Button
-            android:id="@+id/activity_features_check_content_write_btn_submit"
-            android:text="Submit"
+        <ImageButton
+            android:id="@+id/activity_features_check_content_write_ib_submit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#7514e2"
+            android:src="@drawable/btn_submit"
+            android:scaleType="fitCenter"
             android:layout_weight="1"/>
 
     </LinearLayout>

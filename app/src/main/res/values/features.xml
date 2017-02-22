@@ -2,9 +2,9 @@
 <resources>
     <string-array name="features">
         <item >Học từ mới</item>
-        <item >Từ ghi nhớ</item>
-        <item >Truyện vui</item>
-        <item >Kiểm tra trí nhớ</item>
+        <item >Từ yêu thích</item>
+        <item >Truyện cười</item>
+        <item >Kiểm tra</item>
     </string-array>
 
 </resources>

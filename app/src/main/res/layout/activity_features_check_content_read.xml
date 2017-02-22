@@ -4,7 +4,8 @@
     android:id="@+id/activity_features_check_content_read"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fcf7d0"
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.features.check.ContentListen">
 
@@ -16,9 +17,13 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_time"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#713d0d"
+            android:text="50(s)"
             android:layout_weight="1" />
 
         <LinearLayout
@@ -35,9 +40,13 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_answer"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
+            android:text="0/10"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -50,10 +59,11 @@
         android:layout_weight="3">
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/activity_features_check_content_read_iv_picture"
             android:layout_width="256dp"
             android:layout_height="256dp"
-            android:background="#0f0"
+            android:background="#b3f7b3"
             android:padding="10dp"/>
 
     </LinearLayout>
@@ -66,7 +76,7 @@
         android:layout_weight="1">
 
         <Button
-            android:id="@+id/activity_features_check_content_read_btn_a"
+            android:id="@+id/activity_features_check_content_read_btn_first"
             android:text="Câu A"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -74,7 +84,7 @@
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/activity_features_check_content_read_btn_b"
+            android:id="@+id/activity_features_check_content_read_btn_second"
             android:text="Câu B"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -82,7 +92,7 @@
             android:layout_weight="1"/>
 
         <Button
-            android:id="@+id/activity_features_check_content_read_btn_c"
+            android:id="@+id/activity_features_check_content_read_btn_third"
             android:text="Câu C"
             android:layout_width="0dp"
             android:layout_height="match_parent"

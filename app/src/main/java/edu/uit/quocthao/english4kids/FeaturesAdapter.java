@@ -1,63 +1,75 @@
 package edu.uit.quocthao.english4kids;
 
-import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class FeaturesAdapter extends ArrayAdapter<String> {
+public class FeaturesAdapter extends RecyclerView.Adapter<FeaturesAdapter.FeatureViewHolder> {
 
-    private Activity contextFeatures = null;
+    private ArrayList<String> listFeatures = new ArrayList<>();
 
-    private int layoutId;
-
-    private String[] arrFeatures;
-
-    public FeaturesAdapter(Activity context, int layoutId, String[] arrFeatures) {
-        super(context, layoutId, arrFeatures);
-
-        this.contextFeatures = context;
-        this.layoutId = layoutId;
-        this.arrFeatures = arrFeatures;
-
+    public FeaturesAdapter(String[] arrFeatures) {
+        for (int i = 0; i < arrFeatures.length; i++) {
+            listFeatures.add(arrFeatures[i]);
+        }
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = contextFeatures.getLayoutInflater();
-        convertView = inflater.inflate(R.layout.adapter_features, null);
+    @Override
+    public FeatureViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.adapter_features, parent, false);
+        return new FeatureViewHolder(itemView);
+    }
 
-        ImageView ivFeature = (ImageView) convertView
-                .findViewById(R.id.adapter_features_iv_feature);
-        TextView tvFeature = (TextView) convertView
-                .findViewById(R.id.adapter_features_tv_feature);
+    @Override
+    public void onBindViewHolder(FeatureViewHolder holder, int position) {
 
+        holder.tvFeature.setText(listFeatures.get(position));
         switch (position) {
             case 0:
-                ivFeature.setImageResource(R.drawable.ic_features_study);
-                tvFeature.setText(arrFeatures[0]);
+                holder.ivFeature.setImageResource(R.drawable.ic_features_study);
                 break;
 
             case 1:
-                ivFeature.setImageResource(R.drawable.ic_features_like);
-                tvFeature.setText(arrFeatures[1]);
+                holder.ivFeature.setImageResource(R.drawable.ic_features_like);
                 break;
 
             case 2:
-                ivFeature.setImageResource(R.drawable.ic_features_story);
-                tvFeature.setText(arrFeatures[2]);
+                holder.ivFeature.setImageResource(R.drawable.ic_features_story);
                 break;
 
             case 3:
-                ivFeature.setImageResource(R.drawable.ic_features_check);
-                tvFeature.setText(arrFeatures[3]);
+                holder.ivFeature.setImageResource(R.drawable.ic_features_check);
                 break;
         }
-
-        return convertView;
     }
+
+    @Override
+    public int getItemCount() {
+        return listFeatures.size();
+    }
+
+    public class FeatureViewHolder extends RecyclerView.ViewHolder {
+
+        protected ImageView ivFeature;
+
+        protected TextView tvFeature;
+
+        public FeatureViewHolder(View convertView) {
+            super(convertView);
+
+            ivFeature = (ImageView) convertView
+                    .findViewById(R.id.adapter_features_iv_feature);
+            tvFeature = (TextView) convertView
+                    .findViewById(R.id.adapter_features_tv_feature);
+
+        }
+    }
+
 }
+

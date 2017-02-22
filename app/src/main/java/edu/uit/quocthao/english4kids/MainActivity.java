@@ -1,20 +1,21 @@
 package edu.uit.quocthao.english4kids;
 
-import android.app.ActionBar;
 import android.content.Intent;
-import android.support.v4.view.MenuItemCompat;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import edu.uit.quocthao.english4kids.features.check.FeaturesCheck;
+import edu.uit.quocthao.english4kids.features.like.FeaturesLike;
 import edu.uit.quocthao.english4kids.features.story.FeaturesStory;
 import edu.uit.quocthao.english4kids.features.study.FeaturesStudy;
 
@@ -22,9 +23,9 @@ public class MainActivity extends ActionBarActivity {
 
     private String arrFeatures[] = null;
 
-    private ListView lvFeatures = null;
-
     private FeaturesAdapter featuresAdapter = null;
+
+    private RecyclerView recyclerView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -35,9 +36,6 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        Toast.makeText(this, "You click setting", Toast.LENGTH_SHORT).show();
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -45,36 +43,50 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         arrFeatures = getResources().getStringArray(R.array.features);
 
-        lvFeatures = (ListView) findViewById(R.id.activity_main_lv_features);
-        //show các tính năng chính lên listview.
-        featuresAdapter = new FeaturesAdapter(this, R.layout.adapter_features, arrFeatures);
-        lvFeatures.setAdapter(featuresAdapter);
+        //Tạo recycleView
+        recyclerView = (RecyclerView) findViewById(R.id.activity_main_rv_feature);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        featuresAdapter = new FeaturesAdapter(arrFeatures);
+        recyclerView.setAdapter(featuresAdapter);
 
-        //các sự lựa chọn tính năng.
-        lvFeatures.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent;
-
-                switch (position) {
-                    case 0:
-                        intent = new Intent(MainActivity.this, FeaturesStudy.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        intent = new Intent(MainActivity.this, FeaturesStory.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
-                        intent = new Intent(MainActivity.this, FeaturesCheck.class);
-                        startActivity(intent);
-                        break;
-                }
+            public void onItemClick(View view, int position) {
+                choiceFeatures(position);
             }
-        });
 
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void choiceFeatures(int position) {
+        Intent intent;
+        switch (position) {
+            case 0:
+                intent = new Intent(MainActivity.this, FeaturesStudy.class);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(MainActivity.this, FeaturesLike.class);
+                startActivity(intent);
+                break;
+            case 2:
+                intent = new Intent(MainActivity.this, FeaturesStory.class);
+                startActivity(intent);
+                break;
+            case 3:
+                intent = new Intent(MainActivity.this, FeaturesCheck.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

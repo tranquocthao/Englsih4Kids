@@ -18,15 +18,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".features.check.FeaturesCheck" />
-        <activity android:name=".features.FeaturesLikeActivity" />
         <activity android:name=".features.FeaturesSettingActivity" />
         <activity android:name=".features.story.FeaturesStory" />
         <activity android:name=".features.study.FeaturesStudy" />
-        <activity android:name=".features.story.ContentStory" />
         <activity android:name=".features.study.ContentStudy" />
         <activity android:name=".features.check.ContentListen" />
         <activity android:name=".features.check.ContentRead" />
         <activity android:name=".features.check.ContentWrite" />
+        <activity android:name=".features.like.FeaturesLike" />
+        <activity android:name=".features.like.LikeAdapter"></activity>
     </application>
 
 </manifest>

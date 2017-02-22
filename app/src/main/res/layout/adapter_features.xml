@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/adapter_features"
+
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/adapter_features_card_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
-    tools:context="edu.uit.quocthao.english4kids.FeaturesAdapter">
+    android:layout_height="90dp"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="10dp"
+    card_view:cardBackgroundColor="#1bccac">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/adapter_features_iv_feature"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:id="@+id/adapter_features"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#FF0000ff"
-        android:textSize="27dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/adapter_features_tv_feature"
-        android:layout_marginLeft="15dp"
-        android:layout_marginStart="21dp"
-        android:layout_alignBottom="@+id/adapter_features_iv_feature"
-        android:layout_toRightOf="@+id/adapter_features_iv_feature"
-        android:layout_toEndOf="@+id/adapter_features_iv_feature"
-        android:layout_marginBottom="5dp" />
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/adapter_features_iv_feature"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ff0400"
+            android:textSize="27dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Large Text"
+            android:id="@+id/adapter_features_tv_feature"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="21dp"
+            android:layout_alignBottom="@+id/adapter_features_iv_feature"
+            android:layout_toRightOf="@+id/adapter_features_iv_feature"
+            android:layout_toEndOf="@+id/adapter_features_iv_feature"
+            android:layout_marginBottom="5dp" />
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

@@ -11,6 +11,15 @@ public class ObjTopic {
 
     private String enWord;
 
+    private String isLike;
+
+    public ObjTopic() {
+        urlPicture = "";
+        urlAudio = "";
+        enWord = "";
+        isLike = "";
+    }
+
     public String getUrlPicture() {
         return urlPicture;
     }
@@ -33,5 +42,13 @@ public class ObjTopic {
 
     public void setEnWord(String enWord) {
         this.enWord = enWord;
+    }
+
+    public String getIsLike() {
+        return isLike;
+    }
+
+    public void setIsLike(String isLike) {
+        this.isLike = isLike;
     }
 }

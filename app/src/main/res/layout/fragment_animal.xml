@@ -2,14 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#09c4ca"
     tools:context="edu.uit.quocthao.english4kids.features.study.AnimalFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ImageButton
+        android:scaleType="fitXY"
         android:id="@+id/fragment_animal_ib_topic"
         android:layout_gravity="center"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
         android:src="@drawable/ic_topic_animal"/>
 
 </FrameLayout>

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import edu.uit.quocthao.english4kids.MainActivity;
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
@@ -73,7 +72,7 @@ public class ContentListen extends AppCompatActivity {
 
     private int sumAnswer = 0;
 
-    private CountDownTimer count;
+    private CountDownTimer countTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,7 @@ public class ContentListen extends AppCompatActivity {
         initContent();
 
         //Đếm ngược thời gian.
-        count = new CountDownTimer(50000, 1000) {
+        countTime = new CountDownTimer(50000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 tvTime.setText((millisUntilFinished / 1000) + "(s)");
@@ -165,7 +164,6 @@ public class ContentListen extends AppCompatActivity {
     }
 
     private void loadQuestion() {
-
         Random r = new Random();
         int mPicure = r.nextInt(listGames.size()); //Load ảnh.
         postionCorrect = r.nextInt(3); //Vị trí câu trả lời đúng.
@@ -203,7 +201,6 @@ public class ContentListen extends AppCompatActivity {
                 mediaPlay(ibAudioThird, mPicure);
                 break;
         }
-
     }
 
     private void mediaPlay(ImageButton ibClick, final int k) {
@@ -254,7 +251,7 @@ public class ContentListen extends AppCompatActivity {
     }
 
     private void showResult() {
-        count.cancel();
+        countTime.cancel();
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ContentListen.this);
         alertDialog.setTitle("Kết quả");
         alertDialog.setMessage("Bạn trả lời đúng: " + sumCorrect + "/10");
@@ -262,7 +259,7 @@ public class ContentListen extends AppCompatActivity {
         alertDialog.setNegativeButton("Làm lại",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        count = new CountDownTimer(50000, 1000) {
+                        countTime = new CountDownTimer(50000, 1000) {
                             @Override
                             public void onTick(long millisUntilFinished) {
                                 tvTime.setText((millisUntilFinished / 1000) + "(s)");
@@ -279,13 +276,12 @@ public class ContentListen extends AppCompatActivity {
                         }.start();
                         dialog.cancel();
                     }
-                });
-        alertDialog.setPositiveButton("Kết thúc",
+                }).setPositiveButton("Kết thúc",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
-                }).show();
+                }).show().setCanceledOnTouchOutside(false);
 
     }
 }

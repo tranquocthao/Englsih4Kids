@@ -19,6 +19,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import edu.uit.quocthao.english4kids.MainActivity;
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
@@ -46,7 +47,7 @@ public class ContentStudy extends AppCompatActivity {
 
     private ImageView ivLike;
 
-    private int numLike = 0;
+    private ImageView ivHome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,35 +57,62 @@ public class ContentStudy extends AppCompatActivity {
         vpPicture = (ViewPager) findViewById(R.id.activity_features_study_content_vp_picture);
         tvWord = (TextView) findViewById(R.id.activity_features_study_content_tv_word);
         ivLike = (ImageView) findViewById(R.id.activity_features_study_content_iv_like);
+        ivHome = (ImageView) findViewById(R.id.activity_features_study_content_iv_home);
         selectTopic();
         loadData();
+
+        listenViewPager();
+
+    }
+
+    private void listenViewPager() {
         vpPicture.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
-            public void onPageScrolled(int position,
+            public void onPageScrolled(final int position,
                                        float positionOffset,
                                        int positionOffsetPixels) {
+
+                tvWord.setText(myTopics.get(position).getEnWord());
+
+                if (myTopics.get(position).getIsLike().equals("false")) {
+                    ivLike.setImageResource(R.drawable.ic_like);
+                }
+                else {
+                    ivLike.setImageResource(R.drawable.ic_dislike);
+                }
+
+                ivLike.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (myTopics.get(position).getIsLike().equals("false")) {
+                            ivLike.setImageResource(R.drawable.ic_dislike);
+                            myTopics.get(position).setIsLike("true");
+                            drEnglish.child(nameTopic + position).child("isLike").setValue("true");
+                        } else {
+                            ivLike.setImageResource(R.drawable.ic_like);
+                            myTopics.get(position).setIsLike("false");
+                            drEnglish.child(nameTopic + position).child("isLike").setValue("false");
+                        }
+                    }
+                });
+
+                ivHome.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ContentStudy.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
             }
 
             @Override
             public void onPageSelected(int position) {
-                tvWord.setText(adapterContent.getPageTitle(position) + "");
-                ivLike.setImageResource(R.drawable.ic_like);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-            }
-        });
-        ivLike.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (numLike == 0) {
-                    ivLike.setImageResource(R.drawable.ic_dislike);
-                    numLike = 1;
-                } else {
-                    ivLike.setImageResource(R.drawable.ic_like);
-                    numLike = 0;
-                }
             }
         });
     }
@@ -98,28 +126,23 @@ public class ContentStudy extends AppCompatActivity {
 
         switch (topicStudy) {
             case 0:
-                tvWord.setText("dog");
                 drEnglish = fbEnglish.getReference().child("study").child("animals");
                 nameTopic = "animal";
-
                 break;
             case 1:
-                tvWord.setText("basketball");
                 drEnglish = fbEnglish.getReference().child("study").child("sports");
                 nameTopic = "sport";
-
                 break;
             case 2:
-                tvWord.setText("doctor");
                 drEnglish = fbEnglish.getReference().child("study").child("jobs");
                 nameTopic = "job";
-
                 break;
         }
     }
 
     public void loadData() {
-        drEnglish.addValueEventListener(new ValueEventListener() {
+
+        drEnglish.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 lengthTopics = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
@@ -134,6 +157,8 @@ public class ContentStudy extends AppCompatActivity {
                             .child(nameTopic + i).child("audio").getValue().toString());
                     myTopic.setEnWord(dataSnapshot
                             .child(nameTopic + i).child("word").getValue().toString());
+                    myTopic.setIsLike(dataSnapshot
+                            .child(nameTopic + i).child("isLike").getValue().toString());
 
                     myTopics.add(myTopic);
 

@@ -1,7 +1,5 @@
 package edu.uit.quocthao.english4kids.features.story;
 
-import android.app.Activity;
-
 import java.io.Serializable;
 
 /**
@@ -9,6 +7,9 @@ import java.io.Serializable;
  */
 
 public class ObjectStory implements Serializable {
+
+    private String urlPicture;
+
     private String titleVi;
 
     private String titleEn;
@@ -18,17 +19,28 @@ public class ObjectStory implements Serializable {
     private String bodyEn;
 
     public ObjectStory() {
+        this.urlPicture = null;
         this.titleVi = null;
         this.titleEn = null;
         this.bodyVi = null;
         this.bodyEn = null;
     }
 
-    public ObjectStory(int num, String titleVi, String titleEn, String bodyVi, String bodyEn) {
+    public ObjectStory(String urlPicture, String titleVi,
+                       String titleEn, String bodyVi, String bodyEn) {
+        this.urlPicture = urlPicture;
         this.titleVi = titleVi;
         this.titleEn = titleEn;
         this.bodyVi = bodyVi;
         this.bodyEn = bodyEn;
+    }
+
+    public String getUrlPicture() {
+        return urlPicture;
+    }
+
+    public void setUrlPicture(String urlPicture) {
+        this.urlPicture = urlPicture;
     }
 
     public String getTitleVi() {

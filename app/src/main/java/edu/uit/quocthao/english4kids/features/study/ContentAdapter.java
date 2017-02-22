@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.features.story.ObjectStory;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
 /**
