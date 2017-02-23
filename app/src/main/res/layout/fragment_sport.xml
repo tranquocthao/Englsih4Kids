@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#9900ff"
+    android:background="#b48ece"
     tools:context="edu.uit.quocthao.english4kids.features.study.SportFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,8 +10,9 @@
         android:scaleType="fitXY"
         android:id="@+id/fragment_sport_ib_topic"
         android:layout_gravity="center"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:src="@drawable/ic_topic_sport"/>
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_study_sport"/>
 
 </FrameLayout>

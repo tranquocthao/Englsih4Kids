@@ -33,6 +33,5 @@ public class FeaturesStudy extends AppCompatActivity {
         tlTopic.setupWithViewPager(vpTopic);
         vpTopic.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlTopic));
         tlTopic.setTabsFromPagerAdapter(adapter);
-
     }
 }

@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    android:background="#fcf7d0"
+    android:background="@drawable/ic_background"
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="#1bccac"
-        android:layout_marginBottom="10dp">
+        android:background="@drawable/custom_pressed"
+        android:layout_marginBottom="15dp"
+        android:padding="2dp">
 
         <ImageView
             android:layout_width="match_parent"
@@ -27,5 +28,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"/>
+        android:layout_marginRight="10dp" />
 </LinearLayout>

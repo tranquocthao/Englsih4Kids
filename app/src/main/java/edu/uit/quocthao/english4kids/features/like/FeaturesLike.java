@@ -1,35 +1,19 @@
 package edu.uit.quocthao.english4kids.features.like;
 
-import android.content.Intent;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.uit.quocthao.english4kids.FeaturesAdapter;
-import edu.uit.quocthao.english4kids.MainActivity;
 import edu.uit.quocthao.english4kids.R;
-import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
-import edu.uit.quocthao.english4kids.features.check.FeaturesCheck;
-import edu.uit.quocthao.english4kids.features.story.FeaturesStory;
-import edu.uit.quocthao.english4kids.features.study.ContentAdapter;
-import edu.uit.quocthao.english4kids.features.study.ContentStudy;
-import edu.uit.quocthao.english4kids.features.study.FeaturesStudy;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
 public class FeaturesLike extends AppCompatActivity {

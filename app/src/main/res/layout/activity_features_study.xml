@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#0ff"
         android:layout_weight="1.5"
+        android:background="@drawable/custom_pressed"
         android:gravity="center">
 
         <TextView
@@ -31,17 +31,16 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
         android:layout_weight="5">
 
         <android.support.design.widget.TabLayout
-            android:background="#c8c8c9"
+            android:background="#eca363"
             android:layout_alignParentTop="true"
             android:id="@+id/activity_features_study_tl_topic"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:tabSelectedTextColor="#e66d6d"
-            app:tabTextColor="#7c6854"
+            app:tabSelectedTextColor="#ff6a6a"
+            app:tabTextColor="#b2c177"
             android:layout_weight="1"
             />
 
@@ -49,7 +48,6 @@
             android:id="@+id/activity_features_study_vp_topic"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#ff00dd"
             android:layout_weight="6"
             />
 

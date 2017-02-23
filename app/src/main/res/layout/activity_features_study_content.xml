@@ -37,7 +37,7 @@
             android:id="@+id/activity_features_study_content_tv_word"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="#5eff0022"
+            android:background="@drawable/custom_pressed"
             android:textColor="#bf6d2e"
             android:textSize="25sp"
             android:layout_weight="2"/>
@@ -62,15 +62,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
         android:gravity="center"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:padding="10dp">
 
         <android.support.v4.view.ViewPager
             android:id="@+id/activity_features_study_content_vp_picture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#0f0"/>
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:background="@drawable/custom_picture"
+            android:padding="1.5dp"/>
 
     </LinearLayout>
 

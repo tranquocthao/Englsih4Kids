@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f7f703"
+    android:background="#ecec83"
     tools:context="edu.uit.quocthao.english4kids.features.study.JobFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,8 +10,9 @@
         android:scaleType="fitXY"
         android:id="@+id/fragment_job_ib_topic"
         android:layout_gravity="center"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:src="@drawable/ic_topic_job"/>
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:elevation="10dp"
+        android:src="@drawable/ic_study_job"/>
 
 </FrameLayout>

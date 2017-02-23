@@ -192,8 +192,12 @@ public class ContentRead extends AppCompatActivity {
                 if (btnClick.getText().toString().equals(listGames.get(mPicure).getEnWord())) {
                     tempCorect++;
                     Toast.makeText(ContentRead.this, " Correct! ", Toast.LENGTH_LONG).show();
+                    MediaPlayer mediaCorrect = MediaPlayer.create(ContentRead.this, R.raw.check_correct);
+                    mediaCorrect.start();
                 } else {
                     Toast.makeText(ContentRead.this, "InCorrect! ", Toast.LENGTH_LONG).show();
+                    MediaPlayer mediaFail = MediaPlayer.create(ContentRead.this, R.raw.check_fail);
+                    mediaFail.start();
                 }
 
                 tvAnswer.setText(sumAnswer + "/10");

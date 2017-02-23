@@ -9,10 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import edu.uit.quocthao.english4kids.features.check.FeaturesCheck;
 import edu.uit.quocthao.english4kids.features.like.FeaturesLike;

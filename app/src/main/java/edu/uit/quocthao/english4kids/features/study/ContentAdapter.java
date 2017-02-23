@@ -4,13 +4,13 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
-import edu.uit.quocthao.english4kids.features.story.ObjectStory;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
 /**
@@ -52,6 +51,9 @@ public class ContentAdapter extends PagerAdapter {
         Picasso.with(view.getContext())
                 .load(arrTopics.get(position).getUrlPicture())
                 .into(imageView);
+
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.anim_combine);
+        imageView.startAnimation(animation);
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

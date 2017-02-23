@@ -5,6 +5,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.ViewById;
+
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.features.study.TopicAdapter;
 

@@ -1,6 +1,7 @@
 package edu.uit.quocthao.english4kids.features.check;
 
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.CountDownTimer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -182,9 +183,15 @@ public class ContentWrite extends AppCompatActivity {
                             tempCorect++;
                             Toast.makeText(ContentWrite.this,
                                     " Correct! ", Toast.LENGTH_LONG).show();
+                            MediaPlayer mediaCorrect = MediaPlayer.create(
+                                    ContentWrite.this, R.raw.check_correct);
+                            mediaCorrect.start();
                         } else {
                             Toast.makeText(ContentWrite.this,
                                     "InCorrect! ", Toast.LENGTH_LONG).show();
+                            MediaPlayer mediaFail = MediaPlayer.create(
+                                    ContentWrite.this, R.raw.check_fail);
+                            mediaFail.start();
                         }
 
                         tvAnswer.setText(sumAnswer + "/10");

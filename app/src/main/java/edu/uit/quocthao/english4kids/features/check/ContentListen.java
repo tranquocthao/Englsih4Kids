@@ -203,10 +203,11 @@ public class ContentListen extends AppCompatActivity {
         }
     }
 
-    private void mediaPlay(ImageButton ibClick, final int k) {
+    private void mediaPlay(final ImageButton ibClick, final int k) {
         ibClick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ibClick.setImageResource(R.drawable.ic_check_listen_pause);
                 mediaContent = new MediaPlayer();
                 mediaContent.setAudioStreamType(AudioManager.STREAM_MUSIC);
                 try {
@@ -219,9 +220,19 @@ public class ContentListen extends AppCompatActivity {
                     @Override
                     public void onPrepared(MediaPlayer mp3) {
                         mp3.start();
+
+                    }
+
+                });
+                mediaContent.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                            ibClick.setImageResource(R.drawable.ic_check_listen_play);
                     }
                 });
+
             }
+
         });
     }
 
@@ -233,8 +244,12 @@ public class ContentListen extends AppCompatActivity {
                 if (btnClick.getText().toString().equals(answerCorrect)) {
                     tempCorect++;
                     Toast.makeText(ContentListen.this, " Correct! ", Toast.LENGTH_LONG).show();
+                    MediaPlayer mediaCorrect = MediaPlayer.create(ContentListen.this, R.raw.check_correct);
+                    mediaCorrect.start();
                 } else {
                     Toast.makeText(ContentListen.this, "InCorrect! ", Toast.LENGTH_LONG).show();
+                    MediaPlayer mediaFail = MediaPlayer.create(ContentListen.this, R.raw.check_fail);
+                    mediaFail.start();
                 }
 
                 tvAnswer.setText(sumAnswer + "/10");

@@ -3,12 +3,13 @@
 <com.daimajia.swipe.SwipeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp">
+    android:layout_height="120dp">
     <!-- Bottom View Start-->
     <LinearLayout
         android:gravity="center"
         android:orientation="horizontal"
         android:id="@+id/like_bottom_wrapper"
+        android:background="@drawable/custom_like"
         android:layout_width="100dp"
         android:layout_height="match_parent">
         <!--What you want to show-->
@@ -34,9 +35,7 @@
             android:id="@+id/adapter_features_like_cardview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="15dp"
             card_view:cardCornerRadius="10dp"
-            card_view:cardElevation="15dp"
             card_view:cardBackgroundColor="#e2a6fa">
 
             <LinearLayout
@@ -44,14 +43,17 @@
                 android:id="@+id/adapter_features"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:background="@drawable/custom_like">
 
                 <ImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:scaleType="center"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/custom_like"
                     android:id="@+id/adapter_features_like_cardview_iv_pivture"
-                    android:layout_marginRight="5dp"/>
+                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="5dp"/>
 
 
                 <TextView

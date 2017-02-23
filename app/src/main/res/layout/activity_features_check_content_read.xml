@@ -30,7 +30,8 @@
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="2"
-            android:background="#5eff0022">
+            android:padding="3dp"
+            android:background="@drawable/custom_pressed">
 
             <ImageView
                 android:gravity="center"
@@ -54,17 +55,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
+        android:background="#96ff96"
         android:gravity="center"
         android:layout_weight="3">
 
         <ImageView
             android:scaleType="fitXY"
             android:id="@+id/activity_features_check_content_read_iv_picture"
-            android:layout_width="256dp"
-            android:layout_height="256dp"
-            android:background="#b3f7b3"
-            android:padding="10dp"/>
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:background="@drawable/custom_picture"
+            android:padding="1.5dp"/>
 
     </LinearLayout>
 

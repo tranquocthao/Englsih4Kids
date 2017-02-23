@@ -44,5 +44,7 @@ public class JobFragment extends Fragment {
                 startActivity(intentJob);
             }
         });
+
     }
+
 }
