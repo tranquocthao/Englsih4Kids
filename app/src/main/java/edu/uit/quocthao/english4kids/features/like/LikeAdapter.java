@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.features.check.ContentListen;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
 public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder> {
@@ -78,7 +81,12 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
         Picasso.with(contextLike)
                 .load(listLikes.get(position).getUrlPicture())
                 .into(holder.ivPicture);
+        Animation animation1 = AnimationUtils.loadAnimation(contextLike, R.anim.anim_combine_like);
+        holder.ivPicture.startAnimation(animation1);
+
         holder.tvWord.setText(listLikes.get(position).getEnWord());
+        Animation animation2 = AnimationUtils.loadAnimation(contextLike, R.anim.anim_combine);
+        holder.tvWord.startAnimation(animation2);
 
         holder.layoutSurface.setOnClickListener(new View.OnClickListener() {
             @Override

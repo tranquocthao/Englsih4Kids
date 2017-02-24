@@ -22,8 +22,8 @@
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="#713d0d"
-            android:text="50(s)"
+            android:background="#d57fed"
+            android:textColor="#f00"
             android:layout_weight="1" />
 
         <LinearLayout
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
-            android:text="0/10"
+            android:textColor="#f00"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -76,29 +76,53 @@
         android:background="#0ff043"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_first"
-            android:text="Câu A"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#e27006"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_second"
-            android:text="Câu B"
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_first"
+                android:text="Câu A"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#0d714c"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_third"
-            android:text="Câu C"
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_second"
+                android:text="Câu B"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#7514e2"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_third"
+                android:text="Câu B"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

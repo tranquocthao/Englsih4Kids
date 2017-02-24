@@ -2,11 +2,16 @@ package edu.uit.quocthao.english4kids.features.check;
 
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -63,6 +68,10 @@ public class ContentRead extends AppCompatActivity {
 
     private CountDownTimer countTime;
 
+    private Handler handler = new Handler();
+
+    private int numQuestion = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,9 +79,10 @@ public class ContentRead extends AppCompatActivity {
 
         initContent();
 
+        loadData();
+
         countTimes();
 
-        loadData();
 
         clickCorrect(btnAnswerFirst);
         clickCorrect(btnAnswerSecond);
@@ -80,21 +90,38 @@ public class ContentRead extends AppCompatActivity {
     }
 
     private void countTimes() {
-        countTime = new CountDownTimer(50000, 1000) {
+        drEnglish.child("check").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                tvTime.setText((millisUntilFinished / 1000) + "(s)");
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                numQuestion = Integer.parseInt(dataSnapshot.child("timeOut").getValue().toString());
+                tvAnswer.setText("0/" + numQuestion);
+
+                tvTime.setText((5000 * numQuestion) + "(s)");
+
+                countTime = new CountDownTimer((5000 * numQuestion), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tvTime.setText((millisUntilFinished / 1000) + "(s)");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sumAnswer = 0;
+                        sumCorrect = tempCorect;
+                        tempCorect = 0;
+                        tvAnswer.setText("0/" + numQuestion);
+                        tvTime.setText("0(s)");
+                        showResult();
+                    }
+                }.start();
             }
 
             @Override
-            public void onFinish() {
-                sumAnswer = 0;
-                sumCorrect = tempCorect;
-                tempCorect = 0;
-                tvAnswer.setText("0/10");
-                showResult();
+            public void onCancelled(DatabaseError databaseError) {
+
             }
-        }.start();
+        });
+
     }
 
     private void initContent() {
@@ -116,6 +143,7 @@ public class ContentRead extends AppCompatActivity {
     private void loadData() {
         //Lấy mảng animal cho vào listGame
         drEnglish.child("study").addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -147,7 +175,13 @@ public class ContentRead extends AppCompatActivity {
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void loadQuestion() {
+
+        btnAnswerFirst.setBackground(getResources().getDrawable(R.drawable.btn_answer));
+        btnAnswerSecond.setBackground(getResources().getDrawable(R.drawable.btn_answer));
+        btnAnswerThird.setBackground(getResources().getDrawable(R.drawable.btn_answer));
+
         Random r = new Random();
         mPicure = r.nextInt(listGames.size()); //Load ảnh.
         postionCorrect = r.nextInt(3); //Vị trí câu trả lời đúng.
@@ -164,6 +198,9 @@ public class ContentRead extends AppCompatActivity {
         Picasso.with(ContentRead.this)
                 .load(listGames.get(mPicure).getUrlPicture())
                 .into(ivPicture);
+        Animation animation = AnimationUtils.loadAnimation(ContentRead.this, R.anim.anim_combine);
+        ivPicture.startAnimation(animation);
+
 
         switch (postionCorrect) {
             case 0:
@@ -186,29 +223,41 @@ public class ContentRead extends AppCompatActivity {
 
     private void clickCorrect(final Button btnClick) {
         btnClick.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
                 sumAnswer++;
                 if (btnClick.getText().toString().equals(listGames.get(mPicure).getEnWord())) {
                     tempCorect++;
-                    Toast.makeText(ContentRead.this, " Correct! ", Toast.LENGTH_LONG).show();
+                    btnClick.setBackground(getResources().getDrawable(R.drawable.btn_correct));
                     MediaPlayer mediaCorrect = MediaPlayer.create(ContentRead.this, R.raw.check_correct);
                     mediaCorrect.start();
                 } else {
-                    Toast.makeText(ContentRead.this, "InCorrect! ", Toast.LENGTH_LONG).show();
+                    btnClick.setBackground(getResources().getDrawable(R.drawable.btn_fail));
                     MediaPlayer mediaFail = MediaPlayer.create(ContentRead.this, R.raw.check_fail);
                     mediaFail.start();
                 }
 
-                tvAnswer.setText(sumAnswer + "/10");
-                if (sumAnswer == 10) {
+                tvAnswer.setText(sumAnswer + "/" + numQuestion);
+                if (sumAnswer >= numQuestion) {
                     sumAnswer = 0;
                     sumCorrect = tempCorect;
                     tempCorect = 0;
-                    tvAnswer.setText("0/10");
+                    tvAnswer.setText("0/" + numQuestion);
                     showResult();
                 }
-                loadQuestion();
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (btnClick.getText().toString().equals(listGames.get(mPicure).getEnWord())) {
+                            btnClick.setBackground(getResources().getDrawable(R.drawable.btn_correct));
+                        } else {
+                            btnClick.setBackground(getResources().getDrawable(R.drawable.btn_fail));
+                        }
+                        loadQuestion();
+                    }
+                }, 100);
             }
         });
     }
@@ -221,22 +270,8 @@ public class ContentRead extends AppCompatActivity {
         alertDialog.setIcon(R.drawable.ic_result);
         alertDialog.setNegativeButton("Làm lại",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        countTime = new CountDownTimer(50000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                tvTime.setText((millisUntilFinished / 1000) + "(s)");
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                sumAnswer = 0;
-                                sumCorrect = tempCorect;
-                                tempCorect = 0;
-                                tvAnswer.setText("0/10");
-                                showResult();
-                            }
-                        }.start();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        countTime.start();
                         dialog.cancel();
                     }
                 });
@@ -247,5 +282,12 @@ public class ContentRead extends AppCompatActivity {
                     }
                 }).show().setCanceledOnTouchOutside(false);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        countTime.cancel();
+        finish();
     }
 }

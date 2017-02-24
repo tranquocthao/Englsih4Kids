@@ -20,7 +20,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Like"
+            android:text="Memory Word"
             android:gravity="center"
             android:textColor="#0c4e0d"
             android:textSize="50sp"

@@ -4,10 +4,13 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,6 +77,8 @@ public class ContentListen extends AppCompatActivity {
 
     private CountDownTimer countTime;
 
+    private int numQuestion = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,30 +87,52 @@ public class ContentListen extends AppCompatActivity {
         //Ánh xạ giá trị.
         initContent();
 
-        //Đếm ngược thời gian.
-        countTime = new CountDownTimer(50000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                tvTime.setText((millisUntilFinished / 1000) + "(s)");
-            }
-
-            @Override
-            public void onFinish() {
-                sumAnswer = 0;
-                sumCorrect = tempCorect;
-                tempCorect = 0;
-                tvAnswer.setText("0/10");
-                showResult();
-            }
-        }.start();
-
         //Load giá trị.
         loadData();
+
+        //Đếm ngược thời gian.
+        countTimes();
+
 
         //Đáp án chọn.
         clickCorrect(btnAnswerFirst);
         clickCorrect(btnAnswerSecond);
         clickCorrect(btnAnswerThird);
+
+    }
+
+    private void countTimes() {
+        drEnglish.child("check").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                numQuestion = Integer.parseInt(dataSnapshot.child("timeOut").getValue().toString());
+                tvAnswer.setText("0/" + numQuestion);
+
+                tvTime.setText((5000 * numQuestion) + "(s)");
+
+                countTime = new CountDownTimer((5000 * numQuestion), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tvTime.setText((millisUntilFinished / 1000) + "(s)");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sumAnswer = 0;
+                        sumCorrect = tempCorect;
+                        tempCorect = 0;
+                        tvAnswer.setText("0/" + numQuestion);
+                        tvTime.setText("0(s)");
+                        showResult();
+                    }
+                }.start();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -181,6 +208,9 @@ public class ContentListen extends AppCompatActivity {
                 .load(listGames.get(mPicure).getUrlPicture())
                 .into(ivPicture);
 
+        Animation animation = AnimationUtils.loadAnimation(ContentListen.this, R.anim.anim_bounce);
+        ivPicture.startAnimation(animation);
+
         switch (postionCorrect) {
             case 0:
                 answerCorrect = "Câu A";
@@ -243,21 +273,19 @@ public class ContentListen extends AppCompatActivity {
                 sumAnswer++;
                 if (btnClick.getText().toString().equals(answerCorrect)) {
                     tempCorect++;
-                    Toast.makeText(ContentListen.this, " Correct! ", Toast.LENGTH_LONG).show();
                     MediaPlayer mediaCorrect = MediaPlayer.create(ContentListen.this, R.raw.check_correct);
                     mediaCorrect.start();
                 } else {
-                    Toast.makeText(ContentListen.this, "InCorrect! ", Toast.LENGTH_LONG).show();
                     MediaPlayer mediaFail = MediaPlayer.create(ContentListen.this, R.raw.check_fail);
                     mediaFail.start();
                 }
 
-                tvAnswer.setText(sumAnswer + "/10");
-                if (sumAnswer == 10) {
+                tvAnswer.setText(sumAnswer + "/" + numQuestion);
+                if (sumAnswer >= numQuestion) {
                     sumAnswer = 0;
                     sumCorrect = tempCorect;
                     tempCorect = 0;
-                    tvAnswer.setText("0/10");
+                    tvAnswer.setText("0/" + numQuestion);
                     showResult();
                 }
                 loadQuestion();
@@ -267,36 +295,31 @@ public class ContentListen extends AppCompatActivity {
 
     private void showResult() {
         countTime.cancel();
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ContentListen.this);
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ContentListen.this);
         alertDialog.setTitle("Kết quả");
-        alertDialog.setMessage("Bạn trả lời đúng: " + sumCorrect + "/10");
+        alertDialog.setMessage("Bạn trả lời đúng: " + sumCorrect + "/" + numQuestion);
         alertDialog.setIcon(R.drawable.ic_result);
         alertDialog.setNegativeButton("Làm lại",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        countTime = new CountDownTimer(50000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                tvTime.setText((millisUntilFinished / 1000) + "(s)");
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                sumAnswer = 0;
-                                sumCorrect = tempCorect;
-                                tempCorect = 0;
-                                tvAnswer.setText("0/10");
-                                showResult();
-                            }
-                        }.start();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        countTime.start();
                         dialog.cancel();
                     }
-                }).setPositiveButton("Kết thúc",
+                });
+        alertDialog.setPositiveButton("Kết thúc",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
-                }).show().setCanceledOnTouchOutside(false);
+                });
+        alertDialog.show().setCanceledOnTouchOutside(false);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        countTime.cancel();
+        finish();
     }
 }

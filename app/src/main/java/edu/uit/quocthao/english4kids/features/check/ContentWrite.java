@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -68,6 +70,8 @@ public class ContentWrite extends AppCompatActivity {
 
     private KeyboardUtil kbWrite;
 
+    private int numQuestion = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +79,11 @@ public class ContentWrite extends AppCompatActivity {
 
         initContent();
 
-        countTimes();
-
         loadData();
 
-        clickCorrect(ibReset);
+        countTimes();
 
+        clickCorrect(ibReset);
         clickCorrect(ibSubmit);
 
         layoutWrite.setOnClickListener(new View.OnClickListener() {
@@ -113,21 +116,38 @@ public class ContentWrite extends AppCompatActivity {
     }
 
     private void countTimes() {
-        countTime = new CountDownTimer(50000, 1000) {
+        drEnglish.child("check").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                tvTime.setText((millisUntilFinished / 1000) + "(s)");
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                numQuestion = Integer.parseInt(dataSnapshot.child("timeOut").getValue().toString());
+                tvAnswer.setText("0/" + numQuestion);
+
+                tvTime.setText((5000 * numQuestion) + "(s)");
+
+                countTime = new CountDownTimer((5000 * numQuestion), 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        tvTime.setText((millisUntilFinished / 1000) + "(s)");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sumAnswer = 0;
+                        sumCorrect = tempCorect;
+                        tempCorect = 0;
+                        tvAnswer.setText("0/" + numQuestion);
+                        tvTime.setText("0(s)");
+                        showResult();
+                    }
+                }.start();
             }
 
             @Override
-            public void onFinish() {
-                sumAnswer = 0;
-                sumCorrect = tempCorect;
-                tempCorect = 0;
-                tvAnswer.setText("0/10");
-                showResult();
+            public void onCancelled(DatabaseError databaseError) {
+
             }
-        }.start();
+        });
+
     }
 
     private void loadData() {
@@ -169,6 +189,8 @@ public class ContentWrite extends AppCompatActivity {
         Picasso.with(ContentWrite.this)
                 .load(listGames.get(mPicure).getUrlPicture())
                 .into(ivPicture);
+        Animation animation = AnimationUtils.loadAnimation(ContentWrite.this, R.anim.anim_slide_out);
+        ivPicture.startAnimation(animation);
     }
 
     private void clickCorrect(final ImageButton ibClick) {
@@ -181,27 +203,24 @@ public class ContentWrite extends AppCompatActivity {
                         if (etAnswer.getText().toString().trim().toLowerCase()
                                 .equals(listGames.get(mPicure).getEnWord().toLowerCase())) {
                             tempCorect++;
-                            Toast.makeText(ContentWrite.this,
-                                    " Correct! ", Toast.LENGTH_LONG).show();
                             MediaPlayer mediaCorrect = MediaPlayer.create(
                                     ContentWrite.this, R.raw.check_correct);
                             mediaCorrect.start();
                         } else {
-                            Toast.makeText(ContentWrite.this,
-                                    "InCorrect! ", Toast.LENGTH_LONG).show();
                             MediaPlayer mediaFail = MediaPlayer.create(
                                     ContentWrite.this, R.raw.check_fail);
                             mediaFail.start();
                         }
 
-                        tvAnswer.setText(sumAnswer + "/10");
-                        if (sumAnswer == 10) {
+                        tvAnswer.setText(sumAnswer + "/" + numQuestion);
+                        if (sumAnswer >= numQuestion) {
                             sumAnswer = 0;
                             sumCorrect = tempCorect;
                             tempCorect = 0;
-                            tvAnswer.setText("0/10");
+                            tvAnswer.setText("0/" + numQuestion);
                             showResult();
                         }
+
                         loadQuestion();
                         break;
                     case R.id.activity_features_check_content_write_ib_reset:
@@ -221,23 +240,8 @@ public class ContentWrite extends AppCompatActivity {
         alertDialog.setIcon(R.drawable.ic_result);
         alertDialog.setNegativeButton("Làm lại",
                 new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        countTime = new CountDownTimer(50000, 1000) {
-                            @Override
-                            public void onTick(long millisUntilFinished) {
-                                tvTime.setText((millisUntilFinished / 1000) + "(s)");
-                            }
-
-                            @Override
-                            public void onFinish() {
-                                sumAnswer = 0;
-                                sumCorrect = tempCorect;
-                                tempCorect = 0;
-                                tvAnswer.setText("0/10");
-                                etAnswer.setText("");
-                                showResult();
-                            }
-                        }.start();
+                    public void onClick(final DialogInterface dialog, int which) {
+                        countTime.start();
                         dialog.cancel();
                     }
                 }).setPositiveButton("Kết thúc",
@@ -247,5 +251,12 @@ public class ContentWrite extends AppCompatActivity {
                     }
                 }).show().setCanceledOnTouchOutside(false);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        countTime.cancel();
+        finish();
     }
 }

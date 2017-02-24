@@ -21,11 +21,10 @@
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="#cd74e6"
+            android:background="#d57fed"
             android:textColor="#f00"
             android:layout_weight="1"
-            android:id="@+id/activity_features_check_content_listen_tv_time"
-            android:text="50(s)"/>
+            android:id="@+id/activity_features_check_content_listen_tv_time" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -49,8 +48,7 @@
             android:layout_height="50dp"
             android:background="#ffee00"
             android:textColor="#f00"
-            android:layout_weight="1"
-            android:text="0/10"/>
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
@@ -116,6 +114,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#e27006"
+            android:textColor="#fff"
             android:layout_weight="1"/>
 
         <Button
@@ -124,6 +123,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#0d714c"
+            android:textColor="#fff"
             android:layout_weight="1"/>
 
         <Button
@@ -132,6 +132,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#7514e2"
+            android:textColor="#fff"
             android:layout_weight="1"/>
 
     </LinearLayout>

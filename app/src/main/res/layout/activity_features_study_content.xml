@@ -82,24 +82,11 @@
         android:background="#0ff043"
         android:layout_weight="1">
 
-        <TextView
-            android:layout_width="0dp"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/activity_features_study_content_rv_picture"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#713d0d"
-            android:layout_weight="1"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="#080c7b"
-            android:layout_weight="1"/>
-
-        <ImageButton
-            android:id="@+id/activity_features_study_content_ib_next"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:background="#ffee00"
-            android:layout_weight="1"/>
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </LinearLayout>

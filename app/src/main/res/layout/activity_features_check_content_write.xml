@@ -22,8 +22,8 @@
             android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="#713d0d"
-            android:text="50(s)"
+            android:background="#d57fed"
+            android:textColor="#f00"
             android:layout_weight="1" />
 
         <LinearLayout
@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
-            android:text="0/10"
+            android:textColor="#f00"
             android:layout_weight="1"/>
 
     </LinearLayout>

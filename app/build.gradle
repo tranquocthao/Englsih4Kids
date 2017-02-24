@@ -6,7 +6,7 @@ android {
     buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "edu.uit.quocthao.english4kids"
-        minSdkVersion 14
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -40,6 +40,8 @@ dependencies {
     apt 'org.androidannotations:androidannotations:4.2.0'
     compile 'org.androidannotations:androidannotations-api:4.2.0'
     compile 'com.joanzapata.android:base-adapter-helper:1.1.11'
+
+    compile 'com.crystal:crystalrangeseekbar:1.1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

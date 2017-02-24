@@ -4,7 +4,11 @@ import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import edu.uit.quocthao.english4kids.FeaturesAdapter;
 import edu.uit.quocthao.english4kids.MainActivity;
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
 public class ContentStudy extends AppCompatActivity {
@@ -25,6 +31,12 @@ public class ContentStudy extends AppCompatActivity {
     private TextView tvWord;
 
     private ViewPager vpPicture;
+
+    private RecyclerView recyclerView;
+
+    private ListPictureAdapter listPictureAdapter;
+
+    private ArrayList<String> listPicture = new ArrayList<>();
 
     private int topicStudy;
 
@@ -56,6 +68,7 @@ public class ContentStudy extends AppCompatActivity {
         ivLike = (ImageView) findViewById(R.id.activity_features_study_content_iv_like);
         ivHome = (ImageView) findViewById(R.id.activity_features_study_content_iv_home);
         selectTopic();
+        listPictures();
         loadData();
 
         listenViewPager();
@@ -71,11 +84,12 @@ public class ContentStudy extends AppCompatActivity {
                                        int positionOffsetPixels) {
 
                 tvWord.setText(myTopics.get(position).getEnWord());
+                Animation animation = AnimationUtils.loadAnimation(ContentStudy.this, R.anim.anim_combine);
+                tvWord.startAnimation(animation);
 
                 if (myTopics.get(position).getIsLike().equals("false")) {
                     ivLike.setImageResource(R.drawable.ic_like);
-                }
-                else {
+                } else {
                     ivLike.setImageResource(R.drawable.ic_dislike);
                 }
 
@@ -141,34 +155,60 @@ public class ContentStudy extends AppCompatActivity {
 
         drEnglish.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                lengthTopics = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    lengthTopics = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
 
-                //Animal animal = dataSnapshot.getValue(Animal.class);
-                for (int i = 0; i < lengthTopics; i++) {
+                    //Animal animal = dataSnapshot.getValue(Animal.class);
+                    for (int i = 0; i < lengthTopics; i++) {
 
-                    myTopic = new ObjTopic();
-                    myTopic.setUrlPicture(dataSnapshot
-                            .child(nameTopic + i).child("picture").getValue().toString());
-                    myTopic.setUrlAudio(dataSnapshot
-                            .child(nameTopic + i).child("audio").getValue().toString());
-                    myTopic.setEnWord(dataSnapshot
-                            .child(nameTopic + i).child("word").getValue().toString());
-                    myTopic.setIsLike(dataSnapshot
-                            .child(nameTopic + i).child("isLike").getValue().toString());
+                        myTopic = new ObjTopic();
+                        myTopic.setUrlPicture(dataSnapshot
+                                .child(nameTopic + i).child("picture").getValue().toString());
+                        myTopic.setUrlAudio(dataSnapshot
+                                .child(nameTopic + i).child("audio").getValue().toString());
+                        myTopic.setEnWord(dataSnapshot
+                                .child(nameTopic + i).child("word").getValue().toString());
+                        myTopic.setIsLike(dataSnapshot
+                                .child(nameTopic + i).child("isLike").getValue().toString());
 
-                    myTopics.add(myTopic);
+                        listPicture.add(myTopic.getUrlPicture());
+                        myTopics.add(myTopic);
 
+                    }
+
+                    adapterContent = new ContentAdapter(ContentStudy.this, myTopics);
+                    vpPicture.setAdapter(adapterContent);
+
+                    listPictureAdapter = new ListPictureAdapter(ContentStudy.this, listPicture);
+                    recyclerView.setAdapter(listPictureAdapter);
                 }
 
-                adapterContent = new ContentAdapter(ContentStudy.this, myTopics);
-                vpPicture.setAdapter(adapterContent);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
 
             }
         });
     }
+
+    public void listPictures() {
+        //Tạo recycleView
+        recyclerView = (RecyclerView) findViewById(R.id.activity_features_study_content_rv_picture);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+            }
+        }));
+    }
+
 }
