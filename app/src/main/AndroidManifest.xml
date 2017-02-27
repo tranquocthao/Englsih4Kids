@@ -10,21 +10,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity_">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.check.FeaturesCheck" />
-        <activity android:name=".features.story.FeaturesStory" />
-        <activity android:name=".features.study.FeaturesStudy" />
-        <activity android:name=".features.study.ContentStudy" />
-        <activity android:name=".features.check.ContentListen" />
-        <activity android:name=".features.check.ContentRead" />
-        <activity android:name=".features.check.ContentWrite" />
-        <activity android:name=".features.like.FeaturesLike" />
+
+        <activity android:name=".features.study.FeaturesStudy_" />
+        <activity android:name=".features.study.ContentStudy_" />
+        <activity android:name=".features.like.FeaturesLike_" />
+        <activity android:name=".features.story.FeaturesStory_" />
+        <activity android:name=".features.check.FeaturesCheck_" />
+        <activity android:name=".features.check.ContentListen_" />
+        <activity android:name=".features.check.ContentRead_" />
+        <activity android:name=".features.check.ContentWrite_" />
     </application>
 
 </manifest>

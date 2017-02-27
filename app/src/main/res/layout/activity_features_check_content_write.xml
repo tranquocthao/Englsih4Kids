@@ -17,7 +17,7 @@
         android:layout_weight="1">
 
         <TextView
-            android:id="@+id/activity_features_check_content_read_tv_time"
+            android:id="@+id/activity_features_check_content_write_tv_time"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="0dp"
@@ -41,7 +41,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/activity_features_check_content_read_tv_answer"
+            android:id="@+id/activity_features_check_content_write_tv_answer"
             android:layout_gravity="center"
             android:gravity="center"
             android:layout_width="0dp"

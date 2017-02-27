@@ -1,5 +1,7 @@
 package edu.uit.quocthao.english4kids.object;
 
+import org.androidannotations.annotations.EBean;
+
 /**
  * Created by Quoc Thao on 2/16/2017.
  */
@@ -11,12 +13,15 @@ public class ObjTopic {
 
     private String enWord;
 
+    private String viWord;
+
     private String isLike;
 
     public ObjTopic() {
         urlPicture = "";
         urlAudio = "";
         enWord = "";
+        viWord = "";
         isLike = "";
     }
 
@@ -42,6 +47,14 @@ public class ObjTopic {
 
     public void setEnWord(String enWord) {
         this.enWord = enWord;
+    }
+
+    public String getViWord() {
+        return viWord;
+    }
+
+    public void setViWord(String viWord) {
+        this.viWord = viWord;
     }
 
     public String getIsLike() {

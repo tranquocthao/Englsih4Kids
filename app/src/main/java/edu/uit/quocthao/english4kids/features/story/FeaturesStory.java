@@ -1,15 +1,11 @@
 package edu.uit.quocthao.english4kids.features.story;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,57 +14,58 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_story)
 public class FeaturesStory extends AppCompatActivity {
 
-    private TextView tvTitle;
+    @ViewById(R.id.activity_features_story_rv_view)
+    RecyclerView recyclerView;
 
-    private TextView tvContent;
+    @InstanceState
+    ArrayList<String> listNames = new ArrayList<>();
 
-    private ImageView ivLanguage;
+    @InstanceState
+    ArrayList<ObjectStory> listStories = new ArrayList<>();
 
-    private ArrayList<String> listNames;
+    @InstanceState
+    int lengthStory = 0;
 
-    private Bundle bundleStory;
+    @InstanceState
+    int statuStory = 0;
 
-    private Intent intentStory;
-
-    private FirebaseDatabase fdStory = FirebaseDatabase.getInstance();
-
-    private DatabaseReference drStory = fdStory.getReference();
+    private DatabaseReference drStory;
 
     private ObjectStory objStory;
 
     private StoryAdapter storyAdapter;
 
-    private RecyclerView recyclerView;
+    private AlertDialog.Builder alertBuilder;
 
-    private ArrayList<ObjectStory> listStories = new ArrayList<>();
+    private LinearLayoutManager linearManager;
 
-    private int lengthStory = 0;
-
-    private int statuStory = 0;
-
-    private AlertDialog.Builder alertDialogBuilder;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_story);
+    @AfterViews
+    public void initContent() {
+        drStory = FirebaseDatabase.getInstance().getReference();
 
         loadStory();
-        listNames = new ArrayList<String>();
 
         //Tạo recycleView
-        recyclerView = (RecyclerView) findViewById(R.id.activity_features_story_rv_view);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
+        linearManager = new LinearLayoutManager(this);
+        linearManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearManager);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
                 this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
@@ -91,20 +88,22 @@ public class FeaturesStory extends AppCompatActivity {
         View customDialogView = li.inflate(
                 R.layout.activity_features_story_content_dialog, null);
 
-        alertDialogBuilder = new AlertDialog.Builder(FeaturesStory.this);
-        alertDialogBuilder.setView(customDialogView);
+        alertBuilder = new AlertDialog.Builder(FeaturesStory.this);
+        alertBuilder.setView(customDialogView);
 
-        tvTitle = (TextView) customDialogView.findViewById(
+        final TextView tvTitle = (TextView) customDialogView.findViewById(
                 R.id.activity_features_story_content_dialog_tv_title);
-        tvContent = (TextView) customDialogView.findViewById(
+
+        final TextView tvContent = (TextView) customDialogView.findViewById(
                 R.id.activity_features_story_content_dialog_tv_content);
-        ivLanguage = (ImageView) customDialogView.findViewById(
+
+        final ImageView ivLanguage = (ImageView) customDialogView.findViewById(
                 R.id.activity_features_story_content_dialog_iv_language);
 
         tvTitle.setText(listStories.get(position).getTitleVi());
-        //tiến hành tìm đoạn truyện tương thích
+
         tvContent.setText(listStories.get(position).getBodyVi());
-        //nút Language
+
         ivLanguage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,28 +111,25 @@ public class FeaturesStory extends AppCompatActivity {
 
             }
         });
-        alertDialogBuilder.show();
+
+        alertBuilder.show();
     }
 
     private void showContent(TextView tvTitle, int position,
                              TextView tvContent, ImageView ivLanguage) {
-        //thay đổi icon và nội dung Việt và Anh
-        if ((statuStory % 2) == 0) {
-            //tiến hành tìm tựa đề truyện thích hợp
+
+        if ((statuStory % 2) == 0) {    //English
             tvTitle.setText(listStories.get(position).getTitleEn());
-            //tiến hành tìm đoạn truyện tương thích
             tvContent.setText(listStories.get(position).getBodyEn());
-            //hình Logo
             ivLanguage.setImageResource(R.drawable.ic_language_vietnam);
-        } else {
-            //tiến hành tìm tựa đề truyện thích hợp
+
+        } else {    //Vietnam
             tvTitle.setText(listStories.get(position).getTitleVi());
-            //tiến hành tìm đoạn truyện tương thích
             tvContent.setText(listStories.get(position).getBodyVi());
-            //hình Logo
             ivLanguage.setImageResource(R.drawable.ic_language_american);
+
         }
-        statuStory ++;
+        statuStory ++;  //Click
     }
 
     private void loadStory() {

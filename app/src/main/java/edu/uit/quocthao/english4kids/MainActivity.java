@@ -1,8 +1,5 @@
 package edu.uit.quocthao.english4kids;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -26,20 +23,30 @@ import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import edu.uit.quocthao.english4kids.features.check.FeaturesCheck;
-import edu.uit.quocthao.english4kids.features.like.FeaturesLike;
-import edu.uit.quocthao.english4kids.features.story.FeaturesStory;
-import edu.uit.quocthao.english4kids.features.study.FeaturesStudy;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
+
+import edu.uit.quocthao.english4kids.features.check.FeaturesCheck_;
+import edu.uit.quocthao.english4kids.features.like.FeaturesLike_;
+import edu.uit.quocthao.english4kids.features.story.FeaturesStory_;
+import edu.uit.quocthao.english4kids.features.study.FeaturesStudy_;
 
 import static android.widget.Toast.makeText;
 
+@Fullscreen
+@EActivity(R.layout.activity_main)
 public class MainActivity extends ActionBarActivity {
 
-    private String arrFeatures[] = null;
+    @InstanceState
+    String arrFeatures[] = null;
 
-    private FeaturesAdapter featuresAdapter = null;
+    FeaturesAdapter featuresAdapter = null;
 
-    private RecyclerView recyclerView;
+    @ViewById(R.id.activity_main_rv_feature)
+    RecyclerView recyclerView;
 
     private TextView tvSetting;
 
@@ -62,7 +69,6 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    ProgressDialog progressBar;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         LayoutInflater li = LayoutInflater.from(MainActivity.this);
@@ -80,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
         sbSetting.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
             public void valueChanged(Number value) {
-                tvSetting.setText("* Option number question: (" + value + ")");
+                tvSetting.setText("* Lựa chọn số câu hỏi: (" + value + ")");
                 timeOut = value.toString();
             }
         });
@@ -98,11 +104,8 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    @AfterViews
+    public void initContent(){
         if (!isNetworkAvailable(this)){
             makeText(this, "Network is not available!", Toast.LENGTH_LONG).show();
         }
@@ -110,7 +113,6 @@ public class MainActivity extends ActionBarActivity {
         arrFeatures = getResources().getStringArray(R.array.features);
 
         //Tạo recycleView
-        recyclerView = (RecyclerView) findViewById(R.id.activity_main_rv_feature);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -136,19 +138,19 @@ public class MainActivity extends ActionBarActivity {
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(MainActivity.this, FeaturesStudy.class);
+                intent = new Intent(this, FeaturesStudy_.class);
                 startActivity(intent);
                 break;
             case 1:
-                intent = new Intent(MainActivity.this, FeaturesLike.class);
+                intent = new Intent(this, FeaturesLike_.class);
                 startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(MainActivity.this, FeaturesStory.class);
+                intent = new Intent(this, FeaturesStory_.class);
                 startActivity(intent);
                 break;
             case 3:
-                intent = new Intent(MainActivity.this, FeaturesCheck.class);
+                intent = new Intent(this, FeaturesCheck_.class);
                 startActivity(intent);
                 break;
         }

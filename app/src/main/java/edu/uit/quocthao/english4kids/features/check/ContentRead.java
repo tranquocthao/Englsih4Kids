@@ -24,65 +24,86 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.Random;
 
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_check_content_read)
 public class ContentRead extends AppCompatActivity {
 
-    private ImageView ivPicture;
+    @ViewById(R.id.activity_features_check_content_read_iv_picture)
+    ImageView ivPicture;
 
-    private Button btnAnswerFirst;
+    @ViewById(R.id.activity_features_check_content_read_btn_first)
+    Button btnAnswerFirst;
 
-    private Button btnAnswerSecond;
+    @ViewById(R.id.activity_features_check_content_read_btn_second)
+    Button btnAnswerSecond;
 
-    private Button btnAnswerThird;
+    @ViewById(R.id.activity_features_check_content_read_btn_third)
+    Button btnAnswerThird;
 
-    private TextView tvAnswer;
+    @ViewById(R.id.activity_features_check_content_read_tv_answer)
+    TextView tvAnswer;
 
-    private TextView tvTime;
+    @ViewById(R.id.activity_features_check_content_read_tv_time)
+    TextView tvTime;
 
-    private FirebaseDatabase fdEnglish = FirebaseDatabase.getInstance();
+    @InstanceState
+    ArrayList<ObjTopic> listGames = new ArrayList<>();
 
-    private DatabaseReference drEnglish = fdEnglish.getReference();
+    @InstanceState
+    int lengthGames;
+
+    @InstanceState
+    int postionCorrect;
+
+    @InstanceState
+    int numQuestion;
+
+    @InstanceState
+    String answerCorrect;
+
+    @InstanceState
+    String[] arrTopics;
+
+    @InstanceState
+    int sumCorrect = 0;
+
+    @InstanceState
+    int tempCorect = 0;
+
+    @InstanceState
+    int sumAnswer = 0;
+
+    @InstanceState
+    int mPicure = 0;
+
+    private DatabaseReference drEnglish;
 
     private ObjTopic objGame;
-
-    private ArrayList<ObjTopic> listGames = new ArrayList<>();
-
-    private int lengthGames;
-
-    private String[] arrTopic = {"animal", "sport", "job"};
-
-    private int postionCorrect;
-
-    private int mPicure = 0;
-
-    private int sumCorrect = 0;
-
-    private int tempCorect = 0;
-
-    private int sumAnswer = 0;
 
     private CountDownTimer countTime;
 
     private Handler handler = new Handler();
 
-    private int numQuestion = 10;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_check_content_read);
-
-        initContent();
+    @AfterViews
+    public void initContent() {
+        drEnglish = FirebaseDatabase.getInstance().getReference();
+        arrTopics = getResources().getStringArray(R.array.topics);
 
         loadData();
 
         countTimes();
-
 
         clickCorrect(btnAnswerFirst);
         clickCorrect(btnAnswerSecond);
@@ -124,22 +145,6 @@ public class ContentRead extends AppCompatActivity {
 
     }
 
-    private void initContent() {
-        ivPicture = (ImageView) findViewById(
-                R.id.activity_features_check_content_read_iv_picture);
-        btnAnswerFirst = (Button) findViewById(
-                R.id.activity_features_check_content_read_btn_first);
-        btnAnswerSecond = (Button) findViewById(
-                R.id.activity_features_check_content_read_btn_second);
-        btnAnswerThird = (Button) findViewById(
-                R.id.activity_features_check_content_read_btn_third);
-        tvAnswer = (TextView) findViewById(
-                R.id.activity_features_check_content_read_tv_answer);
-        tvTime = (TextView) findViewById(
-                R.id.activity_features_check_content_read_tv_time);
-
-    }
-
     private void loadData() {
         //Lấy mảng animal cho vào listGame
         drEnglish.child("study").addValueEventListener(new ValueEventListener() {
@@ -148,20 +153,20 @@ public class ContentRead extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //Lấy giá trị trong animals, sports, jobs
-                for (int i = 0; i < arrTopic.length; i++) {
+                for (int i = 0; i < arrTopics.length; i++) {
                     lengthGames = Integer.parseInt(dataSnapshot
-                            .child(arrTopic[i] + "s").child("length").getValue().toString());
+                            .child(arrTopics[i] + "s").child("length").getValue().toString());
 
                     for (int j = 0; j < lengthGames; j++) {
                         objGame = new ObjTopic();
-                        objGame.setUrlAudio(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("audio").getValue().toString());
-                        objGame.setUrlPicture(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("picture").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("word").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("word").getValue().toString());
+                        objGame.setUrlAudio(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("audio").getValue().toString());
+                        objGame.setUrlPicture(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("picture").getValue().toString());
+                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("word").getValue().toString());
+                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("word").getValue().toString());
 
                         listGames.add(objGame);
                     }

@@ -1,5 +1,7 @@
 package edu.uit.quocthao.english4kids.features.story;
 
+import org.androidannotations.annotations.EBean;
+
 import java.io.Serializable;
 
 /**

@@ -34,7 +34,7 @@ public class AnimalFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibAnimal = (ImageButton) getActivity().findViewById(R.id.fragment_animal_ib_topic);
-        intentAnimal = new Intent(getActivity(), ContentStudy.class);
+        intentAnimal = new Intent(getActivity(), ContentStudy_.class);
         bundleAnimal = new Bundle();
         bundleAnimal.putInt("topic", 0);
         intentAnimal.putExtra("topics", bundleAnimal);

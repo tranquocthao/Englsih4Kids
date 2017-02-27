@@ -4,10 +4,8 @@ import android.content.DialogInterface;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -15,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,6 +21,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -31,68 +34,82 @@ import java.util.Random;
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_check_content_listen)
 public class ContentListen extends AppCompatActivity {
 
-    private ImageView ivPicture;
+    @ViewById(R.id.activity_features_check_content_listen_iv_picture)
+    ImageView ivPicture;
 
-    private ImageButton ibAudioFirst;
+    @ViewById(R.id.activity_features_check_content_listen_ib_audio_first)
+    ImageButton ibAudioFirst;
 
-    private ImageButton ibAudioSecond;
+    @ViewById(R.id.activity_features_check_content_listen_ib_audio_second)
+    ImageButton ibAudioSecond;
 
-    private ImageButton ibAudioThird;
+    @ViewById(R.id.activity_features_check_content_listen_ib_audio_third)
+    ImageButton ibAudioThird;
 
-    private Button btnAnswerFirst;
+    @ViewById(R.id.activity_features_check_content_listen_btn_answer_first)
+    Button btnAnswerFirst;
 
-    private Button btnAnswerSecond;
+    @ViewById(R.id.activity_features_check_content_listen_btn_answer_second)
+    Button btnAnswerSecond;
 
-    private Button btnAnswerThird;
+    @ViewById(R.id.activity_features_check_content_listen_btn_answer_third)
+    Button btnAnswerThird;
 
-    private TextView tvAnswer;
+    @ViewById(R.id.activity_features_check_content_listen_tv_answer)
+    TextView tvAnswer;
 
-    private TextView tvTime;
+    @ViewById(R.id.activity_features_check_content_listen_tv_time)
+    TextView tvTime;
 
-    private FirebaseDatabase fdEnglish = FirebaseDatabase.getInstance();
+    @InstanceState
+    ArrayList<ObjTopic> listGames = new ArrayList<>();
 
-    private DatabaseReference drEnglish = fdEnglish.getReference();
+    @InstanceState
+    int lengthGames;
+
+    @InstanceState
+    int postionCorrect;
+
+    @InstanceState
+    int numQuestion;
+
+    @InstanceState
+    String answerCorrect;
+
+    @InstanceState
+    String[] arrTopics;
+
+    @InstanceState
+    int sumCorrect = 0;
+
+    @InstanceState
+    int tempCorect = 0;
+
+    @InstanceState
+    int sumAnswer = 0;
+
+    private DatabaseReference drEnglish;
 
     private ObjTopic objGame;
 
-    private ArrayList<ObjTopic> listGames = new ArrayList<>();
-
-    private int lengthGames;
-
-    private String[] arrTopic = {"animal", "sport", "job"};
-
-    private int postionCorrect;
-
     private MediaPlayer mediaContent;
-
-    private String answerCorrect;
-
-    private int sumCorrect = 0;
-
-    private int tempCorect = 0;
-
-    private int sumAnswer = 0;
 
     private CountDownTimer countTime;
 
-    private int numQuestion = 10;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_check_content_listen);
-
-        //Ánh xạ giá trị.
-        initContent();
+    @AfterViews
+    public void initContent() {
+        drEnglish = FirebaseDatabase.getInstance().getReference();
+        arrTopics = getResources().getStringArray(R.array.topics);
 
         //Load giá trị.
         loadData();
 
         //Đếm ngược thời gian.
         countTimes();
-
 
         //Đáp án chọn.
         clickCorrect(btnAnswerFirst);
@@ -136,28 +153,6 @@ public class ContentListen extends AppCompatActivity {
 
     }
 
-    private void initContent() {
-        ivPicture = (ImageView) findViewById(
-                R.id.activity_features_check_content_listen_iv_picture);
-        ibAudioFirst = (ImageButton) findViewById(
-                R.id.activity_features_check_content_listen_ib_audio_first);
-        ibAudioSecond = (ImageButton) findViewById(
-                R.id.activity_features_check_content_listen_ib_audio_second);
-        ibAudioThird = (ImageButton) findViewById(
-                R.id.activity_features_check_content_listen_ib_audio_third);
-        btnAnswerFirst = (Button) findViewById(
-                R.id.activity_features_check_content_listen_btn_answer_first);
-        btnAnswerSecond = (Button) findViewById(
-                R.id.activity_features_check_content_listen_btn_answer_second);
-        btnAnswerThird = (Button) findViewById(
-                R.id.activity_features_check_content_listen_btn_answer_third);
-        tvAnswer = (TextView) findViewById(
-                R.id.activity_features_check_content_listen_tv_answer);
-        tvTime = (TextView) findViewById(
-                R.id.activity_features_check_content_listen_tv_time);
-
-    }
-
     private void loadData() {
         //Lấy mảng animal cho vào listGame
         drEnglish.child("study").addValueEventListener(new ValueEventListener() {
@@ -165,18 +160,18 @@ public class ContentListen extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //Lấy giá trị trong animals, sports, jobs
-                for (int i = 0; i < arrTopic.length; i++) {
+                for (int i = 0; i < arrTopics.length; i++) {
                     lengthGames = Integer.parseInt(dataSnapshot
-                            .child(arrTopic[i] + "s").child("length").getValue().toString());
+                            .child(arrTopics[i] + "s").child("length").getValue().toString());
 
                     for (int j = 0; j < lengthGames; j++) {
                         objGame = new ObjTopic();
-                        objGame.setUrlAudio(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("audio").getValue().toString());
-                        objGame.setUrlPicture(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("picture").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("word").getValue().toString());
+                        objGame.setUrlAudio(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("audio").getValue().toString());
+                        objGame.setUrlPicture(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("picture").getValue().toString());
+                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("word").getValue().toString());
 
                         listGames.add(objGame);
                     }
@@ -192,16 +187,16 @@ public class ContentListen extends AppCompatActivity {
 
     private void loadQuestion() {
         Random r = new Random();
-        int mPicure = r.nextInt(listGames.size()); //Load ảnh.
-        postionCorrect = r.nextInt(3); //Vị trí câu trả lời đúng.
-        int mFirst, mSecond; //Load thêm 2 audio khác.
+        int mPicure = r.nextInt(listGames.size());  //Load ảnh.
+        postionCorrect = r.nextInt(3);              //Vị trí câu trả lời đúng.
+        int mFirst, mSecond;                        //Load thêm 2 audio khác.
 
         do {
-            mFirst = r.nextInt(listGames.size()); //Load audio thứ 1.
+            mFirst = r.nextInt(listGames.size());   //Load audio thứ 1.
         } while (mFirst == mPicure);
 
         do {
-            mSecond = r.nextInt(listGames.size()); //Load audio thứ 1.
+            mSecond = r.nextInt(listGames.size());  //Load audio thứ 2.
         } while ((mSecond == mPicure) || (mSecond == mFirst));
 
         Picasso.with(ContentListen.this)

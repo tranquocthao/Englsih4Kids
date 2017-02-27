@@ -35,11 +35,11 @@ public class ListenFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibListen = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_listen);
-        intentListen = new Intent(getActivity(), ContentListen.class);
 
         ibListen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intentListen = new Intent(getActivity(), ContentListen_.class);
                 startActivity(intentListen);
             }
         });

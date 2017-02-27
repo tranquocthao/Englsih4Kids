@@ -39,8 +39,7 @@ dependencies {
     compile 'com.daimajia.swipelayout:library:1.2.0'
     apt 'org.androidannotations:androidannotations:4.2.0'
     compile 'org.androidannotations:androidannotations-api:4.2.0'
-    compile 'com.joanzapata.android:base-adapter-helper:1.1.11'
-
+    compile 'com.joanzapata.android:base-adapter-helper-parent:1.1.11'
     compile 'com.crystal:crystalrangeseekbar:1.1.1'
 }
 

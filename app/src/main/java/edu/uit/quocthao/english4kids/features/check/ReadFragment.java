@@ -34,11 +34,11 @@ public class ReadFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibRead = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_read);
-        intentRead = new Intent(getActivity(), ContentRead.class);
 
         ibRead.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intentRead = new Intent(getActivity(), ContentRead_.class);
                 startActivity(intentRead);
             }
         });

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -23,6 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -30,54 +37,73 @@ import edu.uit.quocthao.english4kids.KeyboardUtil;
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_check_content_write)
 public class ContentWrite extends AppCompatActivity {
 
-    private LinearLayout layoutWrite;
+    @ViewById(R.id.activity_features_check_content_write)
+    LinearLayout layoutWrite;
 
-    private ImageView ivPicture;
+    @ViewById(R.id.activity_features_check_content_write_iv_picture)
+    ImageView ivPicture;
 
-    private ImageButton ibReset;
+    @ViewById(R.id.activity_features_check_content_write_tv_answer)
+    TextView tvAnswer;
 
-    private ImageButton ibSubmit;
+    @ViewById(R.id.activity_features_check_content_write_tv_time)
+    TextView tvTime;
 
-    private EditText etAnswer;
+    @ViewById(R.id.activity_features_check_content_write_et_answer)
+    EditText etAnswer;
 
-    private TextView tvAnswer;
+    @ViewById(R.id.activity_features_check_content_write_ib_reset)
+    ImageButton ibReset;
 
-    private TextView tvTime;
+    @ViewById(R.id.activity_features_check_content_write_ib_submit)
+    ImageButton ibSubmit;
 
-    private FirebaseDatabase fdEnglish = FirebaseDatabase.getInstance();
+    @InstanceState
+    ArrayList<ObjTopic> listGames = new ArrayList<>();
 
-    private DatabaseReference drEnglish = fdEnglish.getReference();
+    @InstanceState
+    int lengthGames;
+
+    @InstanceState
+    int postionCorrect;
+
+    @InstanceState
+    int numQuestion;
+
+    @InstanceState
+    String answerCorrect;
+
+    @InstanceState
+    String[] arrTopics;
+
+    @InstanceState
+    int sumCorrect = 0;
+
+    @InstanceState
+    int tempCorect = 0;
+
+    @InstanceState
+    int sumAnswer = 0;
+
+    @InstanceState
+    int mPicure = 0;
+
+    private DatabaseReference drEnglish;
 
     private ObjTopic objGame;
-
-    private ArrayList<ObjTopic> listGames = new ArrayList<>();
-
-    private int lengthGames;
-
-    private String[] arrTopic = {"animal", "sport", "job"};
-
-    private int mPicure = 0;
-
-    private int sumCorrect = 0;
-
-    private int tempCorect = 0;
-
-    private int sumAnswer = 0;
 
     private CountDownTimer countTime;
 
     private KeyboardUtil kbWrite;
 
-    private int numQuestion = 10;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_check_content_write);
-
-        initContent();
+    @AfterViews
+    public void initContent() {
+        drEnglish = FirebaseDatabase.getInstance().getReference();
+        arrTopics = getResources().getStringArray(R.array.topics);
 
         loadData();
 
@@ -93,26 +119,6 @@ public class ContentWrite extends AppCompatActivity {
                 kbWrite.hideSoftKeyboard(ContentWrite.this);
             }
         });
-    }
-
-    private void initContent() {
-
-        layoutWrite = (LinearLayout) findViewById(R.id.activity_features_check_content_write);
-
-        ivPicture = (ImageView) findViewById(
-                R.id.activity_features_check_content_write_iv_picture);
-        ibReset = (ImageButton) findViewById(
-                R.id.activity_features_check_content_write_ib_reset);
-        ibSubmit = (ImageButton) findViewById(
-                R.id.activity_features_check_content_write_ib_submit);
-        etAnswer = (EditText) findViewById(
-                R.id.activity_features_check_content_write_et_answer);
-        tvAnswer = (TextView) findViewById(
-                R.id.activity_features_check_content_read_tv_answer);
-        tvTime = (TextView) findViewById(
-                R.id.activity_features_check_content_read_tv_time);
-
-
     }
 
     private void countTimes() {
@@ -152,23 +158,23 @@ public class ContentWrite extends AppCompatActivity {
 
     private void loadData() {
         //Lấy mảng animal cho vào listGame
-        drEnglish.child("study").addValueEventListener(new ValueEventListener() {
+        drEnglish.child("study").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 //Lấy giá trị trong animals, sports, jobs
-                for (int i = 0; i < arrTopic.length; i++) {
+                for (int i = 0; i < arrTopics.length; i++) {
                     lengthGames = Integer.parseInt(dataSnapshot
-                            .child(arrTopic[i] + "s").child("length").getValue().toString());
+                            .child(arrTopics[i] + "s").child("length").getValue().toString());
 
                     for (int j = 0; j < lengthGames; j++) {
                         objGame = new ObjTopic();
-                        objGame.setUrlAudio(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("audio").getValue().toString());
-                        objGame.setUrlPicture(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("picture").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopic[i] + "s")
-                                .child(arrTopic[i] + j).child("word").getValue().toString());
+                        objGame.setUrlAudio(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("audio").getValue().toString());
+                        objGame.setUrlPicture(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("picture").getValue().toString());
+                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
+                                .child(arrTopics[i] + j).child("word").getValue().toString());
 
                         listGames.add(objGame);
                     }

@@ -33,7 +33,7 @@ public class SportFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibSport = (ImageButton) getActivity().findViewById(R.id.fragment_sport_ib_topic);
-        intentSport = new Intent(getActivity(), ContentStudy.class);
+        intentSport = new Intent(getActivity(), ContentStudy_.class);
         bundleSport = new Bundle();
         bundleSport.putInt("topic", 1);
         intentSport.putExtra("topics", bundleSport);

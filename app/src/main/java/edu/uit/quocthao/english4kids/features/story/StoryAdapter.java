@@ -22,9 +22,9 @@ import edu.uit.quocthao.english4kids.R;
 
 public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHolder> {
 
-    private ArrayList<ObjectStory> listStories = new ArrayList<>();
-
     private Context contextStory;
+
+    private ArrayList<ObjectStory> listStories = new ArrayList<>();
 
     public StoryAdapter(Context context, ArrayList<ObjectStory> listStories) {
         this.contextStory = context;

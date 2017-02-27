@@ -33,11 +33,11 @@ public class WriteFragment extends Fragment {
 
         // Inflate the layout for this fragment
         ibWrite = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_write);
-        intentWrite = new Intent(getActivity(), ContentWrite.class);
 
         ibWrite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                intentWrite = new Intent(getActivity(), ContentWrite_.class);
                 startActivity(intentWrite);
             }
         });

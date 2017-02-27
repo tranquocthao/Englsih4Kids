@@ -33,7 +33,7 @@ public class JobFragment extends Fragment {
         // Inflate the layout for this fragment
 
         ibJob = (ImageButton) getActivity().findViewById(R.id.fragment_job_ib_topic);
-        intentJob = new Intent(getActivity(), ContentStudy.class);
+        intentJob = new Intent(getActivity(), ContentStudy_.class);
         bundleJob = new Bundle();
         bundleJob.putInt("topic", 2);
         intentJob.putExtra("topics", bundleJob);
