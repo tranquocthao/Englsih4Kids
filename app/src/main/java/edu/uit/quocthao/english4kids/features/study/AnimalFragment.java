@@ -11,39 +11,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+
 import edu.uit.quocthao.english4kids.R;
 
+@EFragment(R.layout.fragment_animal)
 public class AnimalFragment extends Fragment {
-
-    private ImageButton ibAnimal;
 
     private Bundle bundleAnimal;
 
     private Intent intentAnimal;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_animal, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Inflate the layout for this fragment
-
-        ibAnimal = (ImageButton) getActivity().findViewById(R.id.fragment_animal_ib_topic);
+    @AfterViews
+    public void initContent() {
         intentAnimal = new Intent(getActivity(), ContentStudy_.class);
         bundleAnimal = new Bundle();
         bundleAnimal.putInt("topic", 0);
         intentAnimal.putExtra("topics", bundleAnimal);
+    }
 
-        ibAnimal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intentAnimal);
-            }
-        });
+    @Click(R.id.fragment_animal_ib_topic)
+    public void clickAnimal() {
+        startActivity(intentAnimal);
     }
 }

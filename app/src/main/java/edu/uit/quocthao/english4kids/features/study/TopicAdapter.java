@@ -18,13 +18,13 @@ public class TopicAdapter extends FragmentPagerAdapter {
         Fragment frag = null;
         switch (position) {
             case 0:
-                frag = new AnimalFragment();
+                frag = new AnimalFragment_();
                 break;
             case 1:
-                frag = new SportFragment();
+                frag = new SportFragment_();
                 break;
             case 2:
-                frag = new JobFragment();
+                frag = new JobFragment_();
                 break;
         }
         return frag;

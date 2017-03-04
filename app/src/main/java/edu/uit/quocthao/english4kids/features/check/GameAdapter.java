@@ -19,13 +19,13 @@ public class GameAdapter extends FragmentPagerAdapter {
 
         switch (position) {
             case 0:
-                fr = new ListenFragment();
+                fr = new ListenFragment_();
                 break;
             case 1:
-                fr = new ReadFragment();
+                fr = new ReadFragment_();
                 break;
             case 2:
-                fr = new WriteFragment();
+                fr = new WriteFragment_();
                 break;
         }
 
