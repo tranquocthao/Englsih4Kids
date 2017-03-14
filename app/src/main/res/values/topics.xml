@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="topics">
-        <item >animal</item>
-        <item >sport</item>
-        <item >job</item>
-    </string-array>
-
-</resources>
