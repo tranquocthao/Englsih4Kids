@@ -4,7 +4,8 @@
     android:id="@+id/activity_features_check_content_read"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fcf7d0"
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.features.check.ContentListen">
 
@@ -16,16 +17,21 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_time"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="#713d0d"
+            android:background="#d57fed"
+            android:textColor="#f00"
             android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="2"
-            android:background="#5eff0022">
+            android:padding="3dp"
+            android:background="@drawable/custom_pressed">
 
             <ImageView
                 android:gravity="center"
@@ -35,9 +41,13 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activity_features_check_content_read_tv_answer"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
+            android:textColor="#f00"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -45,16 +55,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
+        android:background="#96ff96"
         android:gravity="center"
         android:layout_weight="3">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/activity_features_check_content_read_vp_picture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#0f0"
-            android:padding="10dp"/>
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/activity_features_check_content_read_iv_picture"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:background="@drawable/custom_picture"
+            android:padding="1.5dp"/>
 
     </LinearLayout>
 
@@ -65,29 +76,53 @@
         android:background="#0ff043"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_a"
-            android:text="Câu A"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#e27006"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_b"
-            android:text="Câu B"
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_first"
+                android:text="Câu A"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#0d714c"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_read_btn_c"
-            android:text="Câu C"
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_second"
+                android:text="Câu B"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+            </LinearLayout>
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#7514e2"
-            android:layout_weight="1"/>
+            android:padding="4dp"
+            android:layout_weight="1">
+
+            <Button
+                android:id="@+id/activity_features_check_content_read_btn_third"
+                android:text="Câu B"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_answer"
+                android:textColor="#fff"/>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

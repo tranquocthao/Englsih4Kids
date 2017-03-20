@@ -1,56 +1,158 @@
 package edu.uit.quocthao.english4kids;
 
+import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import edu.uit.quocthao.english4kids.features.check.FeaturesCheck;
-import edu.uit.quocthao.english4kids.features.story.FeaturesStory;
-import edu.uit.quocthao.english4kids.features.study.FeaturesStudy;
+import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
+import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-public class MainActivity extends AppCompatActivity {
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
 
+import edu.uit.quocthao.english4kids.features.check.FeaturesCheck_;
+import edu.uit.quocthao.english4kids.features.like.FeaturesLike_;
+import edu.uit.quocthao.english4kids.features.story.FeaturesStory_;
+import edu.uit.quocthao.english4kids.features.study.FeaturesStudy_;
+
+import static android.widget.Toast.makeText;
+
+@Fullscreen
+@EActivity(R.layout.activity_main)
+public class MainActivity extends ActionBarActivity {
+
+    @InstanceState
     String arrFeatures[] = null;
-    ListView lvFeatures = null;
+
     FeaturesAdapter featuresAdapter = null;
 
+    @ViewById(R.id.activity_main_rv_feature)
+    RecyclerView recyclerView;
+
+    private TextView tvSetting;
+
+    private CrystalSeekbar sbSetting;
+
+    private Button btnSetting;
+
+    private String timeOut = "10";
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_main, menu);
+        return true;
+    }
 
-        arrFeatures = getResources().getStringArray(R.array.features);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        LayoutInflater li = LayoutInflater.from(MainActivity.this);
+        View view = li.inflate(R.layout.activity_features_setting, null);
 
-        lvFeatures = (ListView) findViewById(R.id.activity_main_lv_features);
-        //show các tính năng chính lên listview.
-        featuresAdapter = new FeaturesAdapter(this, R.layout.adapter_features, arrFeatures);
-        lvFeatures.setAdapter(featuresAdapter);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
-        //các sự lựa chọn tính năng.
-        lvFeatures.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tvSetting = (TextView) view.findViewById(R.id.tv_setting);
+        sbSetting = (CrystalSeekbar) view.findViewById(R.id.rangeSeekbar);
+        btnSetting = (Button) view.findViewById(R.id.btn_setting);
+
+        sbSetting.setOnSeekbarChangeListener(new OnSeekbarChangeListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent;
-
-                switch (position){
-                    case 0:
-                         intent = new Intent(MainActivity.this, FeaturesStudy.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
-                        intent = new Intent(MainActivity.this, FeaturesStory.class);
-                        startActivity(intent);
-                        break;
-                    case 3:
-                        intent = new Intent(MainActivity.this, FeaturesCheck.class);
-                        startActivity(intent);
-                        break;
-                }
+            public void valueChanged(Number value) {
+                tvSetting.setText("* Lựa chọn số câu hỏi: (" + value + ")");
+                timeOut = value.toString();
             }
         });
 
+        btnSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference drEnglish = FirebaseDatabase
+                        .getInstance().getReference().child("check");
+
+                drEnglish.child("timeOut").setValue(timeOut);
+                dialog.cancel();
+            }
+        });
+        return super.onOptionsItemSelected(item);
+    }
+
+    @AfterViews
+    public void initContent(){
+        if (!isNetworkAvailable(this)){
+            makeText(this, "Network is not available!", Toast.LENGTH_LONG).show();
+        }
+
+        arrFeatures = getResources().getStringArray(R.array.features);
+
+        //Tạo recycleView
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        featuresAdapter = new FeaturesAdapter(arrFeatures);
+        recyclerView.setAdapter(featuresAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                choiceFeatures(position);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void choiceFeatures(int position) {
+        Intent intent;
+        switch (position) {
+            case 0:
+                intent = new Intent(this, FeaturesStudy_.class);
+                startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(this, FeaturesLike_.class);
+                startActivity(intent);
+                break;
+            case 2:
+                intent = new Intent(this, FeaturesStory_.class);
+                startActivity(intent);
+                break;
+            case 3:
+                intent = new Intent(this, FeaturesCheck_.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

@@ -1,58 +1,168 @@
 package edu.uit.quocthao.english4kids.features.story;
 
-import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.InstanceState;
+import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_story)
 public class FeaturesStory extends AppCompatActivity {
 
-    ListView lvNames;
-    ArrayList<String> arrNames;
-    ArrayAdapter<String> adapterNames;
-    Bundle bundle;
-    Intent intent;
+    @ViewById(R.id.activity_features_story_rv_view)
+    RecyclerView recyclerView;
 
-    String arrVi[] = {
-            "Đến giờ ăn rồi sao ?", "Ca khúc nổi tiếng", "Bức chân dung", "Món quà của người con gái",
-            "Kẻ ăn xin", "Áo cưới màu trắng", "Thành công một nửa", "Sách viễn tưởng", "Anh chỉ có mình em", "Đừng nói nữa",
-            "Tham vọng thời trai trẻ", "Tiền và bạn", "Dòng sông không sâu", "Bò ăn cỏ", "Bí mật khủng khiếp", "Ruồi", "Làm sao để sống?",
-            "Biết làm sao bây giờ?", "Gà và Chó", "Vợ tôi đó", "Can trường và tế nhị", "Nịnh bợ", "Thời gian", "Vay tiền", "Bao nhiêu kẻ bất lương?",
-            "Ảnh phóng lớn", "Kinh nghiệm khủng khiếp", "Sư tử ăn thịt người", "Con xuống bơi được không?", "Xin chúc mừng!"
-    };
+    @InstanceState
+    ArrayList<String> listNames = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_story);
+    @InstanceState
+    ArrayList<ObjectStory> listStories = new ArrayList<>();
 
-        lvNames = (ListView)findViewById(R.id.activity_features_story_lv_names);
+    @InstanceState
+    int lengthStory = 0;
 
-        bundle = new Bundle();
-        intent = new Intent(FeaturesStory.this, ContentStory.class);
-        arrNames = new ArrayList<String>();
+    @InstanceState
+    int statuStory = 0;
 
-        for(int i = 0; i < 30; i ++)
-            arrNames.add(arrVi[i]);
+    private DatabaseReference drStory;
 
-        adapterNames = new ArrayAdapter<String>(FeaturesStory.this, android.R.layout.simple_list_item_1, arrNames);
-        lvNames.setAdapter(adapterNames);
+    private ObjectStory objStory;
 
+    private StoryAdapter storyAdapter;
 
+    private AlertDialog.Builder alertBuilder;
 
-        lvNames.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    private LinearLayoutManager linearManager;
+
+    @AfterViews
+    public void initContent() {
+        drStory = FirebaseDatabase.getInstance().getReference();
+
+        loadStory();
+
+        //Tạo recycleView
+        recyclerView.setHasFixedSize(true);
+        linearManager = new LinearLayoutManager(this);
+        linearManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(linearManager);
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                bundle.putInt("position", position);
-                intent.putExtra("story", bundle);
-                startActivity(intent);
+            public void onItemClick(View view, final int position) {
+                clickItem(position);
+
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    private void clickItem(final int position) {
+        LayoutInflater li = LayoutInflater.from(FeaturesStory.this);
+        // Bỏ 1 dialog vào layout hiện tại đó.
+        View customDialogView = li.inflate(
+                R.layout.activity_features_story_content_dialog, null);
+
+        alertBuilder = new AlertDialog.Builder(FeaturesStory.this);
+        alertBuilder.setView(customDialogView);
+
+        final TextView tvTitle = (TextView) customDialogView.findViewById(
+                R.id.activity_features_story_content_dialog_tv_title);
+
+        final TextView tvContent = (TextView) customDialogView.findViewById(
+                R.id.activity_features_story_content_dialog_tv_content);
+
+        final ImageView ivLanguage = (ImageView) customDialogView.findViewById(
+                R.id.activity_features_story_content_dialog_iv_language);
+
+        tvTitle.setText(listStories.get(position).getTitleVi());
+
+        tvContent.setText(listStories.get(position).getBodyVi());
+
+        ivLanguage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showContent(tvTitle, position, tvContent, ivLanguage);
+
+            }
+        });
+
+        alertBuilder.show();
+    }
+
+    private void showContent(TextView tvTitle, int position,
+                             TextView tvContent, ImageView ivLanguage) {
+
+        if ((statuStory % 2) == 0) {    //English
+            tvTitle.setText(listStories.get(position).getTitleEn());
+            tvContent.setText(listStories.get(position).getBodyEn());
+            ivLanguage.setImageResource(R.drawable.ic_language_vietnam);
+
+        } else {    //Vietnam
+            tvTitle.setText(listStories.get(position).getTitleVi());
+            tvContent.setText(listStories.get(position).getBodyVi());
+            ivLanguage.setImageResource(R.drawable.ic_language_american);
+
+        }
+        statuStory ++;  //Click
+    }
+
+    private void loadStory() {
+        drStory.child("story").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lengthStory = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
+
+                for (int i = 0; i < lengthStory; i++) {
+                    objStory = new ObjectStory();
+
+                    objStory.setUrlPicture(dataSnapshot.child("story" + i)
+                            .child("picture").getValue().toString());
+                    objStory.setTitleVi(dataSnapshot.child("story" + i)
+                            .child("vietnam").child("title").getValue().toString());
+                    objStory.setTitleEn(dataSnapshot.child("story" + i)
+                            .child("english").child("title").getValue().toString());
+                    objStory.setBodyVi(dataSnapshot.child("story" + i)
+                            .child("vietnam").child("body").getValue().toString());
+                    objStory.setBodyEn(dataSnapshot.child("story" + i)
+                            .child("english").child("body").getValue().toString());
+
+                    listStories.add(objStory);
+                }
+
+                storyAdapter = new StoryAdapter(FeaturesStory.this, listStories);
+                recyclerView.setAdapter(storyAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
     }

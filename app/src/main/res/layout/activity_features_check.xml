@@ -5,15 +5,17 @@
     android:id="@+id/activity_features_check"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fcf7d0"
+
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.features.check.FeaturesCheck">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#0ff"
         android:layout_weight="1.5"
+        android:background="@drawable/custom_pressed"
         android:gravity="center">
 
         <TextView
@@ -30,17 +32,16 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
         android:layout_weight="5">
 
         <android.support.design.widget.TabLayout
-            android:background="#c8c8c9"
+            android:background="#c2d672"
             android:layout_alignParentTop="true"
             android:id="@+id/activity_features_check_tl_game"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:tabSelectedTextColor="#e66d6d"
-            app:tabTextColor="#7c6854"
+            app:tabSelectedTextColor="#f19090"
+            app:tabTextColor="#c29de7"
             android:layout_weight="1"
             />
 
@@ -48,7 +49,6 @@
             android:id="@+id/activity_features_check_vp_game"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#ff00dd"
             android:layout_weight="6"
             />
 

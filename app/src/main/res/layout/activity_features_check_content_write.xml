@@ -4,7 +4,8 @@
     android:id="@+id/activity_features_check_content_write"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fcf7d0"
     android:orientation="vertical"
     tools:context="edu.uit.quocthao.english4kids.features.check.ContentListen">
 
@@ -16,16 +17,21 @@
         android:layout_weight="1">
 
         <TextView
+            android:id="@+id/activity_features_check_content_write_tv_time"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
-            android:background="#713d0d"
+            android:background="#d57fed"
+            android:textColor="#f00"
             android:layout_weight="1" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="2"
-            android:background="#5eff0022">
+            android:padding="3dp"
+            android:background="@drawable/custom_pressed">
 
             <ImageView
                 android:gravity="center"
@@ -35,9 +41,13 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/activity_features_check_content_write_tv_answer"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:background="#ffee00"
+            android:textColor="#f00"
             android:layout_weight="1"/>
 
     </LinearLayout>
@@ -45,15 +55,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#ff007b"
+        android:background="#ff9696"
         android:gravity="center"
         android:layout_weight="3">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/activity_features_check_content_write_vp_picture"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="#0f0"/>
+        <ImageView
+            android:scaleType="fitXY"
+            android:id="@+id/activity_features_check_content_write_iv_picture"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:background="@drawable/custom_picture"
+            android:padding="1.5dp"/>
 
     </LinearLayout>
 
@@ -61,15 +73,16 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#0ff043"
+        android:background="@drawable/custom_like"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/activity_features_check_content_write_btn_reset"
-            android:text="Reset"
+        <ImageButton
+            android:id="@+id/activity_features_check_content_write_ib_reset"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#e27006"
+            android:src="@drawable/btn_reset"
+            android:scaleType="fitCenter"
             android:layout_weight="1"/>
 
         <EditText
@@ -78,17 +91,21 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#0d714c"
-            android:layout_weight="2"
+            android:layout_weight="2.5"
             android:textColor="#d4cd0c"
             android:textSize="30sp"
-            android:ems="10"/>
+            android:ems="15"/>
 
-        <Button
-            android:id="@+id/activity_features_check_content_write_btn_submit"
-            android:text="Submit"
+        <ImageButton
+            android:id="@+id/activity_features_check_content_write_ib_submit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="#7514e2"
+            android:src="@drawable/btn_submit"
+            android:scaleType="fitCenter"
+            android:paddingLeft="2dp"
+            android:paddingRight="3dp"
+            android:paddingTop="8dp"
             android:layout_weight="1"/>
 
     </LinearLayout>

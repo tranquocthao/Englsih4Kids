@@ -15,36 +15,38 @@ public class TopicAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment frag=null;
-        switch (position){
+        Fragment frag = null;
+        switch (position) {
             case 0:
-                frag=new AnimalFragment();
+                frag = new AnimalFragment_();
                 break;
             case 1:
-                frag=new SportFragment();
+                frag = new SportFragment_();
                 break;
             case 2:
-                frag=new JobFragment();
+                frag = new JobFragment_();
                 break;
         }
         return frag;
     }
 
     @Override
-    public int getCount() { return 3;}
+    public int getCount() {
+        return 3;
+    }
 
     @Override
     public CharSequence getPageTitle(int position) {
         String title = "";
-        switch (position){
+        switch (position) {
             case 0:
-                title="ANIMAL";
+                title = "ANIMAL";
                 break;
             case 1:
-                title="SPORT";
+                title = "SPORT";
                 break;
             case 2:
-                title="JOB";
+                title = "JOB";
                 break;
         }
 

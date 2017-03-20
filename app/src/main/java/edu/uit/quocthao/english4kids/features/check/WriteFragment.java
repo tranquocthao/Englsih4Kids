@@ -1,6 +1,5 @@
 package edu.uit.quocthao.english4kids.features.check;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,37 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EFragment;
+
 import edu.uit.quocthao.english4kids.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
+@EFragment(R.layout.fragment_check_write)
 public class WriteFragment extends Fragment {
 
-    ImageButton ibWrite;
-    Intent intent;
+    private Intent intentWrite;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_check_write, container, false);
+    @AfterViews
+    public void initContent() {
+        intentWrite = new Intent(getActivity(), ContentWrite_.class);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        // Inflate the layout for this fragment
-        ibWrite = (ImageButton) getActivity().findViewById(R.id.fragment_check_ib_write);
-        intent = new Intent(getActivity(), ContentWrite.class);
-
-        ibWrite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(intent);
-            }
-        });
+    @Click(R.id.fragment_check_ib_write)
+    public void clickWrite() {
+        startActivity(intentWrite);
     }
 
 }

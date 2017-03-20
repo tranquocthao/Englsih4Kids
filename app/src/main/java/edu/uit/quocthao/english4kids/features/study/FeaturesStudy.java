@@ -1,37 +1,35 @@
 package edu.uit.quocthao.english4kids.features.study;
 
-import android.content.Intent;
-import android.media.MediaPlayer;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Toast;
+
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.ViewById;
 
 import edu.uit.quocthao.english4kids.R;
 
+@Fullscreen
+@EActivity(R.layout.activity_features_study)
 public class FeaturesStudy extends AppCompatActivity {
 
+    @ViewById(R.id.activity_features_study_vp_topic)
     ViewPager vpTopic;
+
+    @ViewById(R.id.activity_features_study_tl_topic)
     TabLayout tlTopic;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_features_study);
+    private TopicAdapter adapterTopic;
 
-
-        getSupportActionBar().hide();
-        vpTopic = (ViewPager) findViewById(R.id.activity_features_study_vp_topic);
-        tlTopic = (TabLayout) findViewById(R.id.activity_features_study_tl_topic);
-        TopicAdapter adapter = new TopicAdapter(getSupportFragmentManager());
-        vpTopic.setAdapter(adapter);
+    @AfterViews
+    public void initContent(){
+        adapterTopic = new TopicAdapter(getSupportFragmentManager());
+        vpTopic.setAdapter(adapterTopic);
         tlTopic.setupWithViewPager(vpTopic);
         vpTopic.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tlTopic));
-        tlTopic.setTabsFromPagerAdapter(adapter);
+        tlTopic.setTabsFromPagerAdapter(adapterTopic);
 
     }
 }

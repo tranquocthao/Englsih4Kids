@@ -9,21 +9,23 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 
 public class GameAdapter extends FragmentPagerAdapter {
-    public GameAdapter(FragmentManager fm) {super(fm); }
+    public GameAdapter(FragmentManager fm) {
+        super(fm);
+    }
 
     @Override
     public Fragment getItem(int position) {
         Fragment fr = null;
 
-        switch (position){
+        switch (position) {
             case 0:
-                fr = new ListenFragment();
+                fr = new ListenFragment_();
                 break;
             case 1:
-                fr = new ReadFragment();
+                fr = new ReadFragment_();
                 break;
             case 2:
-                fr = new WriteFragment();
+                fr = new WriteFragment_();
                 break;
         }
 
@@ -38,15 +40,15 @@ public class GameAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         String title = "";
-        switch (position){
+        switch (position) {
             case 0:
-                title="LISTEN";
+                title = "LISTEN";
                 break;
             case 1:
-                title="READ";
+                title = "READ";
                 break;
             case 2:
-                title="WRITE";
+                title = "WRITE";
                 break;
         }
 
