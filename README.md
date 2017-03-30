@@ -7,6 +7,7 @@
   * This app will help the kids improve English skills about listening, reading, writing, speaking. <br/>
   * The kids can learn vocabulary by subject as animals, sports, jobs ... <br/>
   * The kids can play some games to memorize. <br/>
-  * The kids can read bilingual jokes to relax. <br/>
+  * The kids can read fun stories to relax. <br/>
   * The kids can mark their favorite words. <br/>
-  * Technology: Firebase. <br/>
+  * Mode: online and offline. </br>
+  * TechnolOnlogy: Firebase. <br/>
