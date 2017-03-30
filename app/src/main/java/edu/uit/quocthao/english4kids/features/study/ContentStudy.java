@@ -1,5 +1,6 @@
 package edu.uit.quocthao.english4kids.features.study;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.hawk.Hawk;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -29,11 +31,12 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 
-import edu.uit.quocthao.english4kids.MainActivity;
 import edu.uit.quocthao.english4kids.MainActivity_;
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
+import edu.uit.quocthao.english4kids.services.SQLiteEnglish;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @Fullscreen
 @EActivity(R.layout.activity_features_study_content)
@@ -61,10 +64,10 @@ public class ContentStudy extends AppCompatActivity {
     RecyclerView recyclerView;
 
     @InstanceState
-    ArrayList<String> listPicture = new ArrayList<>();
+    ArrayList<String> listPicture;
 
     @InstanceState
-    ArrayList<ObjTopic> myTopics = new ArrayList<>();
+    ArrayList<ObjTopic> myTopics;
 
     @InstanceState
     int topicStudy;
@@ -79,14 +82,15 @@ public class ContentStudy extends AppCompatActivity {
 
     private ContentAdapter adapterContent;
 
-    private FirebaseDatabase fbEnglish;
-
-    private DatabaseReference drEnglish;
+    private SQLiteEnglish sqLiteEnglish;
 
     private ObjTopic myTopic;
 
     @InstanceState
     int posLike;
+
+    private boolean checkLike1;
+    private String checkLike2;
 
     @Click(R.id.activity_features_study_content_iv_home)
     public void clickHome() {
@@ -97,20 +101,29 @@ public class ContentStudy extends AppCompatActivity {
 
     @Click(R.id.activity_features_study_content_iv_like)
     public void clickLike() {
-        if (myTopics.get(posLike).getIsLike().equals("false")) {
+        checkLike1 = Hawk.contains(myTopics.get(posLike).getEnWord());
+        checkLike2 = Hawk.get(myTopics.get(posLike).getEnWord());
+
+        if (!checkLike1|| checkLike2.equals("false")) {
             ivLike.setImageResource(R.drawable.ic_dislike);
-            myTopics.get(posLike).setIsLike("true");
-            drEnglish.child(nameTopic + posLike).child("isLike").setValue("true");
+            Hawk.put(myTopics.get(posLike).getEnWord(), "true");
+
         } else {
             ivLike.setImageResource(R.drawable.ic_like);
-            myTopics.get(posLike).setIsLike("false");
-            drEnglish.child(nameTopic + posLike).child("isLike").setValue("false");
+            Hawk.put(myTopics.get(posLike).getEnWord(), "false");
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
     }
 
     @AfterViews
     public void initContent() {
-        fbEnglish = FirebaseDatabase.getInstance();
+        Hawk.init(this).build();
+        listPicture = new ArrayList<>();
+        myTopics = new ArrayList<>();
 
         selectTopic();  //Lựa chọn topic như animal, sport, job ....
         listPictures(); //Show list hình ảnh topic được chọn.
@@ -141,15 +154,12 @@ public class ContentStudy extends AppCompatActivity {
 
         switch (topicStudy) {
             case 0:
-                drEnglish = fbEnglish.getReference().child("study").child("animals");
                 nameTopic = "animal";
                 break;
             case 1:
-                drEnglish = fbEnglish.getReference().child("study").child("sports");
                 nameTopic = "sport";
                 break;
             case 2:
-                drEnglish = fbEnglish.getReference().child("study").child("jobs");
                 nameTopic = "job";
                 break;
         }
@@ -174,45 +184,44 @@ public class ContentStudy extends AppCompatActivity {
         }));
     }
 
+    /*Error*/
     public void loadData() {
-        drEnglish.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                lengthTopics = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
+        myTopics = new ArrayList<>();
+        listPicture = new ArrayList<>();
+        sqLiteEnglish = new SQLiteEnglish(this);
 
-                //Animal animal = dataSnapshot.getValue(Animal.class);
-                for (int i = 0; i < lengthTopics; i++) {
+        ArrayList<ObjTopic> newList = new ArrayList<>();
+        newList = sqLiteEnglish.getListEnglish();
+        switch (nameTopic) {
+            case "animal":
 
-                    myTopic = new ObjTopic();
-
-                    myTopic.setUrlPicture(dataSnapshot
-                            .child(nameTopic + i).child("picture").getValue().toString());
-                    myTopic.setUrlAudio(dataSnapshot
-                            .child(nameTopic + i).child("audio").getValue().toString());
-                    myTopic.setEnWord(dataSnapshot
-                            .child(nameTopic + i).child("word").getValue().toString());
-                    myTopic.setViWord(dataSnapshot
-                            .child(nameTopic + i).child("mean").getValue().toString());
-                    myTopic.setIsLike(dataSnapshot
-                            .child(nameTopic + i).child("isLike").getValue().toString());
-
-                    listPicture.add(myTopic.getUrlPicture());
-                    myTopics.add(myTopic);
-
+                for (int i = 0; i < 10; i++) {
+                    myTopics.add(newList.get(i));
+                    listPicture.add(newList.get(i).getUrlPicture());
                 }
+                break;
+            case "sport":
 
-                adapterContent = new ContentAdapter(ContentStudy.this, myTopics);
-                vpPicture.setAdapter(adapterContent);
+                for (int i = 10; i < 20; i++) {
+                    myTopics.add(newList.get(i));
+                    listPicture.add(newList.get(i).getUrlPicture());
+                }
+                break;
+            case "job":
 
-                listPictureAdapter = new ListPictureAdapter(ContentStudy.this, listPicture);
-                recyclerView.setAdapter(listPictureAdapter);
-            }
+                for (int i = 20; i < 30; i++) {
+                    myTopics.add(newList.get(i));
+                    listPicture.add(newList.get(i).getUrlPicture());
+                }
+                break;
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        adapterContent = new ContentAdapter(this, myTopics);
+        vpPicture.setAdapter(adapterContent);
 
-            }
-        });
+        listPictureAdapter = new ListPictureAdapter(ContentStudy.this, listPicture);
+        recyclerView.setAdapter(listPictureAdapter);
+
     }
 
     private void listenViewPager() {
@@ -227,7 +236,10 @@ public class ContentStudy extends AppCompatActivity {
                 tvMean.setText(myTopics.get(position).getViWord());
                 tvWord.setText(myTopics.get(position).getEnWord());
 
-                if (myTopics.get(position).getIsLike().equals("false")) {
+                checkLike1 = Hawk.contains(myTopics.get(position).getEnWord());
+                checkLike2 = Hawk.get(myTopics.get(position).getEnWord());
+
+                if (!checkLike1|| checkLike2.equals("false")) {
                     ivLike.setImageResource(R.drawable.ic_like);
                 } else {
                     ivLike.setImageResource(R.drawable.ic_dislike);

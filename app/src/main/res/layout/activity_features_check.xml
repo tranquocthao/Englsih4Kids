@@ -25,7 +25,7 @@
             android:textColor="#0c4e0d"
             android:textSize="50sp"
             android:textStyle="bold"
-            android:fontFamily="cursive"/>
+            fontPath="fonts/Centenary-Faux.ttf"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,6 +43,8 @@
             app:tabSelectedTextColor="#f19090"
             app:tabTextColor="#c29de7"
             android:layout_weight="1"
+            android:textStyle="bold"
+            fontPath="fonts/BeesChampagne.ttf"
             />
 
         <android.support.v4.view.ViewPager

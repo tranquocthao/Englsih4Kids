@@ -23,9 +23,9 @@
             android:text="Memory Word"
             android:gravity="center"
             android:textColor="#0c4e0d"
-            android:textSize="50sp"
+            android:textSize="45dp"
             android:textStyle="bold"
-            android:fontFamily="cursive" />
+            fontPath="fonts/Centenary-Faux.ttf" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

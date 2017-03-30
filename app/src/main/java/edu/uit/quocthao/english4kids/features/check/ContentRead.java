@@ -22,6 +22,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.hawk.Hawk;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import org.androidannotations.annotations.AfterViews;
@@ -35,6 +38,7 @@ import java.util.Random;
 
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
+import edu.uit.quocthao.english4kids.services.SQLiteEnglish;
 
 @Fullscreen
 @EActivity(R.layout.activity_features_check_content_read)
@@ -96,8 +100,11 @@ public class ContentRead extends AppCompatActivity {
 
     private Handler handler = new Handler();
 
+    private SQLiteEnglish sqLiteEnglish;
+
     @AfterViews
     public void initContent() {
+        Hawk.init(this).build();
         drEnglish = FirebaseDatabase.getInstance().getReference();
         arrTopics = getResources().getStringArray(R.array.topics);
 
@@ -111,73 +118,36 @@ public class ContentRead extends AppCompatActivity {
     }
 
     private void countTimes() {
-        drEnglish.child("check").addListenerForSingleValueEvent(new ValueEventListener() {
+
+        numQuestion = Hawk.get("numQuestion");
+        tvAnswer.setText("0/" + numQuestion);
+
+        tvTime.setText((5000 * numQuestion) + "(s)");
+
+        countTime = new CountDownTimer((5000 * numQuestion), 1000) {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                numQuestion = Integer.parseInt(dataSnapshot.child("timeOut").getValue().toString());
+            public void onTick(long millisUntilFinished) {
+                tvTime.setText((millisUntilFinished / 1000) + "(s)");
+            }
+
+            @Override
+            public void onFinish() {
+                sumAnswer = 0;
+                sumCorrect = tempCorect;
+                tempCorect = 0;
                 tvAnswer.setText("0/" + numQuestion);
-
-                tvTime.setText((5000 * numQuestion) + "(s)");
-
-                countTime = new CountDownTimer((5000 * numQuestion), 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        tvTime.setText((millisUntilFinished / 1000) + "(s)");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        sumAnswer = 0;
-                        sumCorrect = tempCorect;
-                        tempCorect = 0;
-                        tvAnswer.setText("0/" + numQuestion);
-                        tvTime.setText("0(s)");
-                        showResult();
-                    }
-                }.start();
+                tvTime.setText("0(s)");
+                showResult();
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        }.start();
 
     }
 
     private void loadData() {
-        //Lấy mảng animal cho vào listGame
-        drEnglish.child("study").addValueEventListener(new ValueEventListener() {
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        sqLiteEnglish = new SQLiteEnglish(this);
+        listGames = sqLiteEnglish.getListEnglish();
 
-                //Lấy giá trị trong animals, sports, jobs
-                for (int i = 0; i < arrTopics.length; i++) {
-                    lengthGames = Integer.parseInt(dataSnapshot
-                            .child(arrTopics[i] + "s").child("length").getValue().toString());
-
-                    for (int j = 0; j < lengthGames; j++) {
-                        objGame = new ObjTopic();
-                        objGame.setUrlAudio(dataSnapshot.child(arrTopics[i] + "s")
-                                .child(arrTopics[i] + j).child("audio").getValue().toString());
-                        objGame.setUrlPicture(dataSnapshot.child(arrTopics[i] + "s")
-                                .child(arrTopics[i] + j).child("picture").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
-                                .child(arrTopics[i] + j).child("word").getValue().toString());
-                        objGame.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
-                                .child(arrTopics[i] + j).child("word").getValue().toString());
-
-                        listGames.add(objGame);
-                    }
-                }
-                loadQuestion();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        loadQuestion();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -200,9 +170,23 @@ public class ContentRead extends AppCompatActivity {
             mSecond = r.nextInt(listGames.size()); //Load audio thứ 1.
         } while ((mSecond == mPicure) || (mSecond == mFirst));
 
-        Picasso.with(ContentRead.this)
+        Picasso.with(this)
                 .load(listGames.get(mPicure).getUrlPicture())
-                .into(ivPicture);
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(ivPicture, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with(ContentRead.this)
+                                .load(listGames.get(mPicure).getUrlPicture())
+                                .into(ivPicture);
+                    }
+                });
+
         Animation animation = AnimationUtils.loadAnimation(ContentRead.this, R.anim.anim_combine);
         ivPicture.startAnimation(animation);
 

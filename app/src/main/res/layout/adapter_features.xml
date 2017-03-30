@@ -31,16 +31,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ff0400"
-            android:textSize="22dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
+            android:textSize="16dp"
+            android:text="Feature"
             android:id="@+id/adapter_features_tv_feature"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="21dp"
-            android:layout_alignBottom="@+id/adapter_features_iv_feature"
+            android:layout_marginLeft="24dp"
+            android:layout_marginStart="24dp"
+            fontPath="fonts/Star-Studded.ttf"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/adapter_features_iv_feature"
-            android:layout_toEndOf="@+id/adapter_features_iv_feature"
-            android:layout_marginBottom="5dp" />
+            android:layout_toEndOf="@+id/adapter_features_iv_feature" />
 
     </RelativeLayout>
 </android.support.v7.widget.CardView>

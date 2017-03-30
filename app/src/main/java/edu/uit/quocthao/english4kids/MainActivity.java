@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -20,19 +21,29 @@ import android.widget.Toast;
 
 import com.crystal.crystalrangeseekbar.interfaces.OnSeekbarChangeListener;
 import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.orhanobut.hawk.Hawk;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+
 import edu.uit.quocthao.english4kids.features.check.FeaturesCheck_;
 import edu.uit.quocthao.english4kids.features.like.FeaturesLike_;
 import edu.uit.quocthao.english4kids.features.story.FeaturesStory_;
 import edu.uit.quocthao.english4kids.features.study.FeaturesStudy_;
+import edu.uit.quocthao.english4kids.object.ObjTopic;
+import edu.uit.quocthao.english4kids.services.LoadDataService;
+import edu.uit.quocthao.english4kids.services.NetworkService;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 import static android.widget.Toast.makeText;
 
@@ -54,12 +65,11 @@ public class MainActivity extends ActionBarActivity {
 
     private Button btnSetting;
 
-    private String timeOut = "10";
+    private int numQuestion;
 
-    public static boolean isNetworkAvailable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
     }
 
     @Override
@@ -71,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        LayoutInflater li = LayoutInflater.from(MainActivity.this);
+        LayoutInflater li = LayoutInflater.from(this);
         View view = li.inflate(R.layout.activity_features_setting, null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -87,17 +97,16 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void valueChanged(Number value) {
                 tvSetting.setText("* Lựa chọn số câu hỏi: (" + value + ")");
-                timeOut = value.toString();
+                numQuestion = Integer.parseInt(value.toString());
             }
         });
 
         btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference drEnglish = FirebaseDatabase
-                        .getInstance().getReference().child("check");
+                Hawk.init(MainActivity.this).build();
 
-                drEnglish.child("timeOut").setValue(timeOut);
+                Hawk.put("numQuestion", numQuestion);
                 dialog.cancel();
             }
         });
@@ -106,9 +115,6 @@ public class MainActivity extends ActionBarActivity {
 
     @AfterViews
     public void initContent(){
-        if (!isNetworkAvailable(this)){
-            makeText(this, "Network is not available!", Toast.LENGTH_LONG).show();
-        }
 
         arrFeatures = getResources().getStringArray(R.array.features);
 

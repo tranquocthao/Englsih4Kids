@@ -1,15 +1,21 @@
 package edu.uit.quocthao.english4kids.features.like;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.orhanobut.hawk.Hawk;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -17,14 +23,20 @@ import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.InstanceState;
 import org.androidannotations.annotations.ViewById;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
 import edu.uit.quocthao.english4kids.object.ObjTopic;
+import edu.uit.quocthao.english4kids.services.ILikeUpdate;
+import edu.uit.quocthao.english4kids.services.NetworkService;
+import edu.uit.quocthao.english4kids.services.SQLiteEnglish;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @Fullscreen
 @EActivity(R.layout.activity_features_like)
-public class FeaturesLike extends AppCompatActivity {
+public class FeaturesLike extends AppCompatActivity implements ILikeUpdate{
 
     @ViewById(R.id.activity_features_like_rv_view)
     RecyclerView recyclerView;
@@ -32,24 +44,19 @@ public class FeaturesLike extends AppCompatActivity {
     @InstanceState
     ArrayList<ObjTopic> listLikes = new ArrayList<>();
 
-    @InstanceState
-    int lengthLikes;
-
-    @InstanceState
-    String[] arrTopics;
-
-    private DatabaseReference drEnglish;
-
-    private ObjTopic objLike;
-
     private LikeAdapter likeAdapter;
 
     private LinearLayoutManager linearManager;
 
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
+    }
+
     @AfterViews
     public void initContent() {
-        drEnglish = FirebaseDatabase.getInstance().getReference();
-        arrTopics = getResources().getStringArray(R.array.topics);
+        Hawk.init(this).build();
+        loadData();
 
         //Tạo recycleView
         recyclerView.setHasFixedSize(true);
@@ -57,46 +64,44 @@ public class FeaturesLike extends AppCompatActivity {
         linearManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearManager);
 
-        loadData();
-    }
+        likeAdapter = new LikeAdapter(FeaturesLike.this, listLikes);
+        recyclerView.setAdapter(likeAdapter);
 
-    private void loadData() {
-        //Lấy mảng animal cho vào listGame
-
-        drEnglish.child("study").addValueEventListener(new ValueEventListener() {
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(
+                this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                listLikes.clear();
-                //Lấy giá trị trong animals, sports, jobs
-                for (int i = 0; i < arrTopics.length; i++) {
-                    lengthLikes = Integer.parseInt(dataSnapshot
-                            .child(arrTopics[i] + "s").child("length").getValue().toString());
+            public void onItemClick(View view, int position) {
 
-                    for (int j = 0; j < lengthLikes; j++) {
-                        String checkLike = dataSnapshot.child(arrTopics[i] + "s")
-                                .child(arrTopics[i] + j).child("isLike").getValue().toString();
+            }
 
-                         if ( checkLike.equals("true")) {
-                            objLike = new ObjTopic();
-                            objLike.setUrlAudio(dataSnapshot.child(arrTopics[i] + "s")
-                                    .child(arrTopics[i] + j).child("audio").getValue().toString());
-                            objLike.setUrlPicture(dataSnapshot.child(arrTopics[i] + "s")
-                                    .child(arrTopics[i] + j).child("picture").getValue().toString());
-                            objLike.setEnWord(dataSnapshot.child(arrTopics[i] + "s")
-                                    .child(arrTopics[i] + j).child("word").getValue().toString());
-
-                            listLikes.add(objLike);
-                        }
-                    }
-                }
+            @Override
+            public void onLongItemClick(View view, int position) {
+                Toast.makeText(FeaturesLike.this, "Deleted " +
+                        listLikes.get(position).getEnWord(), Toast.LENGTH_SHORT).show();
+                Hawk.put(listLikes.get(position).getEnWord(), "false");
+                listLikes.remove(position);
 
                 likeAdapter = new LikeAdapter(FeaturesLike.this, listLikes);
                 recyclerView.setAdapter(likeAdapter);
             }
+        }));
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+    private void loadData() {
+        //Lấy mảng animal cho vào listGame
+        SQLiteEnglish sqLiteEnglish = new SQLiteEnglish(this);
+        ArrayList<ObjTopic> listEnglish = sqLiteEnglish.getListEnglish();
+
+        for (ObjTopic objLike : listEnglish) {
+            if (Hawk.contains(objLike.getEnWord()) && Hawk.get(objLike.getEnWord()).equals("true")) {
+                listLikes.add(objLike);
             }
-        });
+        }
+    }
+
+    @Override
+    public void updateLike(ArrayList<ObjTopic> listTopics) {
+        likeAdapter = new LikeAdapter(FeaturesLike.this, listTopics);
+        recyclerView.setAdapter(likeAdapter);
     }
 }

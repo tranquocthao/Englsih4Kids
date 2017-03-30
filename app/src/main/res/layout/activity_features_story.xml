@@ -25,8 +25,7 @@
             android:textColor="#0c4e0d"
             android:textSize="50sp"
             android:textStyle="bold"
-            android:fontFamily="cursive"
-            android:id="@+id/textView" />
+            fontPath="fonts/Centenary-Faux.ttf" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

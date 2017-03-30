@@ -16,7 +16,9 @@
         android:textSize="25dp"
         android:layout_gravity="center_horizontal"
         android:text="Setting"
-        android:layout_margin="10dp"/>
+        android:layout_margin="10dp"
+        android:textStyle="bold"
+        fontPath="fonts/Centenary-Faux.ttf"/>
 
     <TextView
         android:id="@+id/tv_setting"

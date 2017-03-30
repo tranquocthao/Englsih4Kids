@@ -7,6 +7,7 @@ import org.androidannotations.annotations.EBean;
  */
 
 public class ObjTopic {
+
     private String urlPicture;
 
     private String urlAudio;
@@ -14,16 +15,6 @@ public class ObjTopic {
     private String enWord;
 
     private String viWord;
-
-    private String isLike;
-
-    public ObjTopic() {
-        urlPicture = "";
-        urlAudio = "";
-        enWord = "";
-        viWord = "";
-        isLike = "";
-    }
 
     public String getUrlPicture() {
         return urlPicture;
@@ -38,7 +29,7 @@ public class ObjTopic {
     }
 
     public void setUrlAudio(String urlAudio) {
-        this.urlAudio = urlAudio;
+            this.urlAudio = urlAudio;
     }
 
     public String getEnWord() {
@@ -57,11 +48,4 @@ public class ObjTopic {
         this.viWord = viWord;
     }
 
-    public String getIsLike() {
-        return isLike;
-    }
-
-    public void setIsLike(String isLike) {
-        this.isLike = isLike;
-    }
 }

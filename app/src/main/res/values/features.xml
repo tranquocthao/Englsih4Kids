@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="features">
-        <item >Học từ mới</item>
-        <item >Từ ghi nhớ</item>
-        <item >Truyện cười</item>
-        <item >Kiểm tra</item>
+        <item >Vocabulary</item>
+        <item >Memory Word</item>
+        <item >Story Funny</item>
+        <item >Mini Game</item>
     </string-array>
 
 </resources>

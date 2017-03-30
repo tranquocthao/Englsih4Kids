@@ -4,6 +4,9 @@
     package="edu.uit.quocthao.english4kids">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="false"
@@ -11,15 +14,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
-        <activity android:name=".MainActivity_">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-
+        tools:replace="android:allowBackup"
+        android:name=".applications.PicassoApplication">
+        <activity android:name=".MainActivity_" />
         <activity android:name=".features.study.FeaturesStudy_" />
         <activity android:name=".features.study.ContentStudy_" />
         <activity android:name=".features.like.FeaturesLike_" />
@@ -28,6 +25,13 @@
         <activity android:name=".features.check.ContentListen_" />
         <activity android:name=".features.check.ContentRead_" />
         <activity android:name=".features.check.ContentWrite_" />
+        <activity android:name=".SplashScreen_">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -10,11 +10,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
+import edu.uit.quocthao.english4kids.object.ObjStory;
 
 /**
  * Created by Quoc Thao on 2/21/2017.
@@ -24,9 +27,9 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
 
     private Context contextStory;
 
-    private ArrayList<ObjectStory> listStories = new ArrayList<>();
+    private ArrayList<ObjStory> listStories = new ArrayList<>();
 
-    public StoryAdapter(Context context, ArrayList<ObjectStory> listStories) {
+    public StoryAdapter(Context context, ArrayList<ObjStory> listStories) {
         this.contextStory = context;
         this.listStories = listStories;
     }
@@ -40,10 +43,25 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.StoryViewHol
     }
 
     @Override
-    public void onBindViewHolder(StoryAdapter.StoryViewHolder holder, int position) {
+    public void onBindViewHolder(final StoryAdapter.StoryViewHolder holder, final int position) {
+
         Picasso.with(contextStory)
                 .load(listStories.get(position).getUrlPicture())
-                .into(holder.ivPicture);
+                .networkPolicy(NetworkPolicy.OFFLINE)
+                .into(holder.ivPicture, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        Picasso.with(contextStory)
+                                .load(listStories.get(position).getUrlPicture())
+                                .into(holder.ivPicture);
+                    }
+                });
+
         holder.tvWord.setText(listStories.get(position).getTitleVi());
 
         Animation animation1 = AnimationUtils.loadAnimation(contextStory, R.anim.anim_combine_like);

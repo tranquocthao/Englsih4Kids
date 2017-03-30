@@ -1,5 +1,6 @@
 package edu.uit.quocthao.english4kids.features.story;
 
+import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,12 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -25,6 +20,9 @@ import java.util.ArrayList;
 
 import edu.uit.quocthao.english4kids.R;
 import edu.uit.quocthao.english4kids.RecyclerItemClickListener;
+import edu.uit.quocthao.english4kids.object.ObjStory;
+import edu.uit.quocthao.english4kids.services.SQLiteStory;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @Fullscreen
 @EActivity(R.layout.activity_features_story)
@@ -37,7 +35,7 @@ public class FeaturesStory extends AppCompatActivity {
     ArrayList<String> listNames = new ArrayList<>();
 
     @InstanceState
-    ArrayList<ObjectStory> listStories = new ArrayList<>();
+    ArrayList<ObjStory> listStories = new ArrayList<>();
 
     @InstanceState
     int lengthStory = 0;
@@ -45,9 +43,7 @@ public class FeaturesStory extends AppCompatActivity {
     @InstanceState
     int statuStory = 0;
 
-    private DatabaseReference drStory;
-
-    private ObjectStory objStory;
+    private ObjStory objStory;
 
     private StoryAdapter storyAdapter;
 
@@ -55,9 +51,17 @@ public class FeaturesStory extends AppCompatActivity {
 
     private LinearLayoutManager linearManager;
 
+    private SQLiteStory sqLiteStory;
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
+    }
+
     @AfterViews
     public void initContent() {
-        drStory = FirebaseDatabase.getInstance().getReference();
+
+        sqLiteStory = new SQLiteStory(this);
 
         loadStory();
 
@@ -129,41 +133,12 @@ public class FeaturesStory extends AppCompatActivity {
             ivLanguage.setImageResource(R.drawable.ic_language_american);
 
         }
-        statuStory ++;  //Click
+        statuStory++;  //Click
     }
 
     private void loadStory() {
-        drStory.child("story").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                lengthStory = Integer.parseInt(dataSnapshot.child("length").getValue().toString());
-
-                for (int i = 0; i < lengthStory; i++) {
-                    objStory = new ObjectStory();
-
-                    objStory.setUrlPicture(dataSnapshot.child("story" + i)
-                            .child("picture").getValue().toString());
-                    objStory.setTitleVi(dataSnapshot.child("story" + i)
-                            .child("vietnam").child("title").getValue().toString());
-                    objStory.setTitleEn(dataSnapshot.child("story" + i)
-                            .child("english").child("title").getValue().toString());
-                    objStory.setBodyVi(dataSnapshot.child("story" + i)
-                            .child("vietnam").child("body").getValue().toString());
-                    objStory.setBodyEn(dataSnapshot.child("story" + i)
-                            .child("english").child("body").getValue().toString());
-
-                    listStories.add(objStory);
-                }
-
-                storyAdapter = new StoryAdapter(FeaturesStory.this, listStories);
-                recyclerView.setAdapter(storyAdapter);
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        listStories = sqLiteStory.getListStories();
+        storyAdapter = new StoryAdapter(FeaturesStory.this, listStories);
+        recyclerView.setAdapter(storyAdapter);
     }
 }

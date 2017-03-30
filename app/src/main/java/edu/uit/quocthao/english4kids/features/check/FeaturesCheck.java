@@ -1,5 +1,6 @@
 package edu.uit.quocthao.english4kids.features.check;
 
+import android.content.Context;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 
 import edu.uit.quocthao.english4kids.R;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 @Fullscreen
 @EActivity(R.layout.activity_features_check)
@@ -21,6 +23,12 @@ public class FeaturesCheck extends AppCompatActivity {
     TabLayout tlGame;
 
     private GameAdapter adapterGame;
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(context));
+    }
+
     @AfterViews
     public void initContent() {
         adapterGame = new GameAdapter(getSupportFragmentManager());
