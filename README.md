@@ -10,4 +10,4 @@
   * The kids can read fun stories to relax. <br/>
   * The kids can mark their favorite words. <br/>
   * Mode: online and offline. </br>
-  * TechnolOnlogy: Firebase. <br/>
+  * Technology: Firebase. <br/>
